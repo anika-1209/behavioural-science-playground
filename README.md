@@ -2,7 +2,7 @@
 
 Learn cognitive biases by experiencing them first: each bias is a short interactive experiment, and the explanation is revealed only afterwards. The full product spec is in [docs/spec.md](docs/spec.md).
 
-**Status:** v1 scaffold. The primer, hub, settings and module flow are built. Nine of the ten launch biases are playable: `exp-01` ("Guess the number"), `exp-02` ("Which is more common?"), `exp-03` ("Ninety percent sure"), `exp-04` ("The outbreak"), `exp-05` ("Pick a plan"), `exp-06` ("The weekend away"), `exp-07` ("Crack the rule"), `exp-08` ("Eyewitness") and `exp-09` ("Line up"). `exp-10` shows as "Coming soon".
+**Status:** v1 content complete. The primer, hub, settings and module flow are built. All ten launch biases are playable, `exp-01` to `exp-10`.
 
 ## Run it
 

@@ -2,7 +2,7 @@ import type { BiasModule } from './types';
 
 // The ten launch modules from the spec's "Launch bias catalogue".
 // Teaser text only: bias names live in content/debriefs/ (P3-1).
-// exp-01 to exp-09 are built; the rest show as "Coming soon" until their
+// All ten are built; the rest show as "Coming soon" until their
 // experiment and debrief are added (see README "Adding a bias").
 
 const NEUTRAL_INTRO = 'Answer quickly and go with your gut.';
@@ -142,10 +142,12 @@ export const MODULES: BiasModule[] = [
     estMinutes: 2,
     experimentType: 'choice',
     conditions: [],
-    introText: NEUTRAL_INTRO,
+    introText:
+      "Imagine you've won a prize, and you can choose when it's paid. You'll make 10 quick choices between a smaller amount sooner and a larger amount later. There's no right answer. " +
+      NEUTRAL_INTRO,
     beginnerRank: 10,
     relatedBiasIds: ['exp-06'],
-    status: 'planned',
+    status: 'ready',
   },
 ];
 
