@@ -148,6 +148,7 @@ Every bias module follows the same four-stage pattern, and the definition is nev
 - P3-1: The definition, bias name and explanation are only shown after the experiment is submitted. The URL, page title and page source must not leak the bias name during the experiment.
 - P3-2: Every experiment can be completed in 4 minutes or less.
 - P3-3: Instructions must be honest. No experiment may deceive the user about anything beyond withholding the bias name until the debrief.
+  - **Approved exception (2026-10-18):** exp-09 ("Line up", conformity) presents scripted answers as "previous players' answers", as Asch's design requires. The result screen states that the players weren't real before the debrief, and the debrief explains why. No other experiment may use this exception.
 - P3-4: If a user's own result didn't show the bias, the debrief says so without judgement ("You resisted it this time — most people don't") and still explains the effect using aggregate data.
 - P3-5: Users can quit mid-experiment and return to the hub; an incomplete experiment does not count as completed and its debrief stays locked.
 - P3-6: All debrief content is reviewed for accuracy by someone with a behavioural science background; every classic study carries a citation.

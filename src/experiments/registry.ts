@@ -7,6 +7,7 @@ import phonePlans from './phone-plans';
 import twoTrips from './two-trips';
 import ruleFinder from './rule-finder';
 import crashClip from './crash-clip';
+import lineJudge from './line-judge';
 
 // Module id → experiment. Add one line per built module.
 export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
@@ -18,6 +19,7 @@ export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
   'exp-06': twoTrips,
   'exp-07': ruleFinder,
   'exp-08': crashClip,
+  'exp-09': lineJudge,
 };
 
 export const getExperiment = (id: string): ExperimentDefinition | undefined => EXPERIMENTS[id];

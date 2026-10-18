@@ -408,6 +408,33 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
 .chart .bar-track { fill: var(--lavender); }
 @media (max-width: 460px) { .facts { grid-template-columns: 1fr; } }
 
+/* Experiment: line judge (exp-09) */
+.cards { display: grid; grid-template-columns: 1fr 2fr; gap: 12px; }
+.lcard { border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 6px; background: var(--surface); min-width: 0; }
+.lcard svg { display: block; width: 100%; height: auto; }
+.lcard .line { stroke: var(--ink); stroke-width: 5; stroke-linecap: round; }
+.lcard .lab { font: 500 15px var(--font-num); fill: var(--muted); }
+.crowd { display: grid; gap: 8px; }
+.crowd ol { list-style: none; margin: 0; padding: 0; display: flex; gap: 8px; flex-wrap: wrap; }
+.crowd li { display: flex; align-items: center; gap: 8px; padding: 6px 10px 6px 6px; border: 1px solid var(--line); border-radius: 999px; background: var(--surface); font-size: 14.5px; }
+.crowd .av { width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; font: 700 12px var(--font-body); color: var(--ink); }
+.crowd .pick { font: 500 15px var(--font-num); color: var(--ink); }
+.crowd li.pending .pick { color: var(--muted); }
+.av-0 { background: var(--sky); } .av-1 { background: var(--peach); } .av-2 { background: var(--mint); } .av-3 { background: var(--pink); } .av-4 { background: var(--butter); }
+.abc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.abc .btn { justify-self: stretch; padding-block: 16px; font-size: 18px; font-family: var(--font-num); }
+
+/* Result: line judge */
+.reveal { background: var(--peach); border-radius: 10px; padding: 12px 16px; }
+.rounds { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 6px; }
+.rd { display: grid; gap: 4px; justify-items: center; font-size: 12px; color: var(--muted); }
+.rd i { width: 100%; aspect-ratio: 1; max-width: 34px; border-radius: 8px; display: grid; place-items: center; font: 700 13px var(--font-body); font-style: normal; border: 2px solid transparent; }
+.rd i.ok, .legend .k-ok { background: var(--mint); color: var(--true); }
+.rd i.went, .legend .k-went { background: var(--pink); color: var(--hot); }
+.rd i.miss, .legend .k-miss { background: var(--butter); color: var(--ink); }
+.rd i.crit { border-color: var(--ink); }
+@media (max-width: 520px) { .cards { grid-template-columns: 1fr; } }
+
 /* Debrief */
 .bias-name { font-size: clamp(40px, 10vw, 58px); color: var(--accent); outline: none; }
 .definition { font-size: 20px; line-height: 1.45; background: var(--lavender); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; }
