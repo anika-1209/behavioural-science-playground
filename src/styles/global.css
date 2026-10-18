@@ -21,6 +21,11 @@
   --pink: #FFE1EC;
   --butter: #FFF3C4;
 
+  /* Scene colours for the crash clip (exp-08) */
+  --road: #CFCAD9;
+  --leaf: #8FCFA8;
+  --car-a: #2F6BD8;
+
   --font-display: "Bricolage Grotesque", "Avenir Next", "Segoe UI", sans-serif;
   --font-body: "Atkinson Hyperlegible", Verdana, "Segoe UI", sans-serif;
   --font-num: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
@@ -350,6 +355,59 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
   .triple .btn { grid-column: 1 / -1; justify-self: stretch; }
 }
 
+/* Experiment: crash clip (exp-08). Cars are drawn centred on (0,0) and moved with transforms. */
+.clip { border: 1px solid var(--line); border-radius: 12px; overflow: hidden; background: var(--mint); }
+.clip svg { display: block; width: 100%; height: auto; }
+.clip .road { fill: var(--road); }
+.clip .dash { stroke: var(--surface); stroke-width: 2; stroke-dasharray: 10 10; }
+.clip .block-a { fill: var(--sky); } .clip .block-b { fill: var(--peach); } .clip .block-c { fill: var(--lavender); } .clip .block-d { fill: var(--butter); }
+.clip .tree { fill: var(--leaf); }
+.clip .car-body-a { fill: var(--car-a); } .clip .car-body-b { fill: var(--hot); }
+.clip .car-glass { fill: var(--surface); fill-opacity: .75; }
+.clip .car { transform-box: view-box; transform-origin: 0 0; }
+.clip .car-a { transform: translate(24px, 145px); }
+.clip .car-b { transform: translate(186px, 278px); }
+.clip .impact { stroke: var(--ink); stroke-width: 2; stroke-linecap: round; opacity: 0; }
+.clip.playing .car-a { animation: drive-a 4.2s forwards; }
+.clip.playing .car-b { animation: drive-b 4.2s forwards; }
+.clip.playing .impact { animation: bump 4.2s forwards; }
+@keyframes drive-a {
+  0% { transform: translate(24px, 145px); animation-timing-function: linear; }
+  55% { transform: translate(158px, 145px); animation-timing-function: ease-out; }
+  72%, 100% { transform: translate(167px, 139px) rotate(16deg); }
+}
+@keyframes drive-b {
+  0% { transform: translate(186px, 278px); animation-timing-function: linear; }
+  55% { transform: translate(186px, 170px); animation-timing-function: ease-out; }
+  72%, 100% { transform: translate(193px, 178px) rotate(-20deg); }
+}
+@keyframes drive-a-steps {
+  0% { transform: translate(24px, 145px); }
+  35% { transform: translate(110px, 145px); }
+  55% { transform: translate(158px, 145px); }
+  72%, 100% { transform: translate(167px, 139px) rotate(16deg); }
+}
+@keyframes drive-b-steps {
+  0% { transform: translate(186px, 278px); }
+  35% { transform: translate(186px, 210px); }
+  55% { transform: translate(186px, 170px); }
+  72%, 100% { transform: translate(193px, 178px) rotate(-20deg); }
+}
+@keyframes bump { 0%, 54% { opacity: 0; } 58% { opacity: 1; } 78%, 100% { opacity: 0; } }
+.clip-bar { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; }
+.choice4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+.choice4 .btn { justify-self: stretch; padding-block: 16px; }
+
+/* Result: crash clip */
+.facts { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fact { border: 1px solid var(--line); border-radius: 12px; padding: 14px; display: grid; gap: 4px; min-width: 0; }
+.fact .val { font: 500 30px var(--font-num); }
+.fact .val.bad { color: var(--hot); }
+.fact .val.good { color: var(--true); }
+.chart .bar { fill: var(--pink); stroke: var(--hot); stroke-width: 1; }
+.chart .bar-track { fill: var(--lavender); }
+@media (max-width: 460px) { .facts { grid-template-columns: 1fr; } }
+
 /* Debrief */
 .bias-name { font-size: clamp(40px, 10vw, 58px); color: var(--accent); outline: none; }
 .definition { font-size: 20px; line-height: 1.45; background: var(--lavender); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; }
@@ -373,6 +431,11 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
 @media (prefers-reduced-motion: reduce) {
   .wheel-g { transition-duration: .6s; }
   .btn, .opt-btn, .prog, .plan, .ticket { transition: none; }
+  /* Cars jump between three positions instead of gliding. Separate keyframes, because
+     timing functions set inside keyframes would override step-end. */
+  .clip.playing .car-a { animation: drive-a-steps 4.2s step-end forwards; }
+  .clip.playing .car-b { animation: drive-b-steps 4.2s step-end forwards; }
+  .clip.playing .impact { animation: bump 4.2s step-end forwards; }
 }
 @media (max-width: 420px) {
   .rail li { font-size: 11.5px; }
