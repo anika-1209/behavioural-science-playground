@@ -2,7 +2,7 @@ import type { BiasModule } from './types';
 
 // The ten launch modules from the spec's "Launch bias catalogue".
 // Teaser text only: bias names live in content/debriefs/ (P3-1).
-// exp-01 to exp-06 are built; the rest show as "Coming soon" until their
+// exp-01 to exp-07 are built; the rest show as "Coming soon" until their
 // experiment and debrief are added (see README "Adding a bias").
 
 const NEUTRAL_INTRO = 'Answer quickly and go with your gut.';
@@ -98,10 +98,11 @@ export const MODULES: BiasModule[] = [
     estMinutes: 4,
     experimentType: 'sort',
     conditions: [],
-    introText: NEUTRAL_INTRO,
+    introText:
+      "We have a rule for sets of three numbers. 2, 4, 6 follows it. Test your own sets of three numbers, and we'll tell you whether each one follows the rule. When you think you know the rule, pick it from a list. Take your time.",
     beginnerRank: 7,
     relatedBiasIds: ['exp-08'],
-    status: 'planned',
+    status: 'ready',
   },
   {
     id: 'exp-08',
