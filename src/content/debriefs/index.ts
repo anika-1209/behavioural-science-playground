@@ -6,6 +6,7 @@ import type { Debrief } from '../types';
 const LOADERS: Record<string, () => Promise<{ default: Debrief }>> = {
   'exp-01': () => import('./exp-01'),
   'exp-02': () => import('./exp-02'),
+  'exp-03': () => import('./exp-03'),
 };
 
 export const hasDebrief = (id: string) => id in LOADERS;

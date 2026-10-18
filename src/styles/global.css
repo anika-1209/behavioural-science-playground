@@ -215,6 +215,29 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
 .d-less { fill: var(--muted); fill-opacity: .55; }
 .ring { fill: none; stroke: var(--accent); stroke-width: 2.5; }
 
+/* Experiment: ranges (exp-03) */
+.how { font-size: 15px; color: var(--muted); background: var(--lavender); border-radius: 10px; padding: 10px 14px; }
+.range { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: end; }
+.range .to { font: 500 15px var(--font-num); color: var(--muted); padding-bottom: 16px; }
+.field { display: grid; gap: 6px; min-width: 0; }
+.field label { font-size: 13px; font-weight: 700; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.field input {
+  width: 100%; font: 500 26px var(--font-num); padding: 10px 12px; border-radius: 10px;
+  border: 2px solid var(--line); background: var(--lavender); color: var(--ink); text-align: right;
+}
+.unit { font: 500 14px var(--font-num); color: var(--muted); }
+
+/* Result chart: ranges */
+.chart .hit { fill: var(--true); }
+.chart .miss { fill: var(--hot); }
+.band { fill: var(--accent); fill-opacity: .18; stroke: var(--accent); stroke-width: 1.5; }
+.target-hit { fill: var(--true); }
+.target-miss { fill: var(--hot); }
+.legend .k-band { width: 18px; height: 11px; border-radius: 3px; background: var(--lavender); border: 1.5px solid var(--accent); }
+.legend .k-hit, .legend .k-miss { width: 9px; height: 9px; border-radius: 1px; transform: rotate(45deg); }
+.legend .k-hit { background: var(--true); }
+.legend .k-miss { background: var(--hot); }
+
 /* Debrief */
 .bias-name { font-size: clamp(40px, 10vw, 58px); color: var(--accent); outline: none; }
 .definition { font-size: 20px; line-height: 1.45; background: var(--lavender); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; }
@@ -244,4 +267,5 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
   .choice { grid-template-columns: 1fr; }
   .pick { grid-template-columns: 1fr; }
   .opt-btn { min-height: 0; padding-block: 20px; }
+  .field input { font-size: 22px; }
 }
