@@ -2,7 +2,7 @@
 
 Learn cognitive biases by experiencing them first: each bias is a short interactive experiment, and the explanation is revealed only afterwards. The full product spec is in [docs/spec.md](docs/spec.md).
 
-**Status:** v1 scaffold. The primer, hub, settings and module flow are built. Three of the ten launch biases are playable: `exp-01` ("Guess the number"), `exp-02` ("Which is more common?") and `exp-03` ("Ninety percent sure"). The other seven show as "Coming soon".
+**Status:** v1 scaffold. The primer, hub, settings and module flow are built. Four of the ten launch biases are playable: `exp-01` ("Guess the number"), `exp-02` ("Which is more common?"), `exp-03` ("Ninety percent sure") and `exp-04` ("The outbreak"). The other six show as "Coming soon".
 
 ## Run it
 
