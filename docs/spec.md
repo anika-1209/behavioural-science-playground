@@ -169,7 +169,7 @@ V1 launches with 10 biases spread across the five hub categories, chosen because
 | Availability heuristic | Judgement & estimation | Judges which of two causes of death is more common (e.g. shark attacks vs falling objects) | Vivid, memorable events feel more frequent | Tversky & Kahneman, 1973 |
 | Overconfidence | Judgement & estimation | Gives 90% confidence ranges for 10 trivia quantities | Fewer than 9 of 10 ranges contain the answer | Alpert & Raiffa, 1982 |
 | Framing effect | Choices & framing | Chooses a disease-response programme described as "lives saved" or "lives lost" (randomised) | Same outcomes, different choices | Tversky & Kahneman, 1981 |
-| Decoy effect | Choices & framing | Picks a subscription plan from a menu with or without an inferior "decoy" option | The decoy steers you to the target plan | Huber, Payne & Puto, 1982 |
+| Decoy effect | Choices & framing | Picks a phone plan from two main plans plus a third that is worse in every way than one of them (which one is randomised) | The decoy steers you to the plan it makes look good | Huber, Payne & Puto, 1982 |
 | Sunk cost fallacy | Choices & framing | Decides whether to keep going with a paid-for but now unappealing trip/project | Past costs shouldn't drive future choices | Arkes & Blumer, 1985 |
 | Confirmation bias | Memory & perception | Wason 2-4-6 task: tests number triples to discover a hidden rule | You tested to confirm, not to disprove | Wason, 1960 |
 | Misinformation effect | Memory & perception | Watches a short animated clip, then answers questions with "smashed" vs "hit" wording | Question wording reshaped your memory | Loftus & Palmer, 1974 |

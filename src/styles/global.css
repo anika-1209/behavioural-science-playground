@@ -268,6 +268,35 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
 .legend .k-gamble { background: var(--peach); border: 1px solid var(--hot); }
 @media (max-width: 520px) { .programmes, .frames { grid-template-columns: 1fr; } }
 
+/* Experiment: phone plans (exp-05) */
+.masthead { display: grid; gap: 4px; background: var(--butter); border-radius: 12px; padding: 14px 18px; }
+.masthead .title { font: 750 24px/1.1 var(--font-display); letter-spacing: -.01em; }
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+.plan {
+  display: grid; gap: 10px; align-content: start; text-align: left;
+  font: 15.5px/1.45 var(--font-body); color: var(--ink);
+  background: var(--surface); border: 2px solid var(--line); border-radius: 12px;
+  padding: 16px; cursor: pointer; transition: border-color .12s ease, transform .12s ease;
+}
+.plan:hover { border-color: var(--accent); transform: translateY(-1px); }
+.plan .name { font: 600 18px/1.2 var(--font-display); }
+.plan .price { font: 500 28px/1 var(--font-num); }
+.plan .price small { font-size: 13px; color: var(--muted); }
+.plan .cta { font-weight: 700; color: var(--accent); font-size: 14.5px; }
+
+/* Result chart: phone plans */
+.chart .gridl { stroke: var(--line); stroke-width: 1; }
+.chart .zone { fill: var(--lavender); }
+.chart .zone-t { fill: var(--accent); font-size: 11.5px; }
+.chart .p-main { fill: var(--accent); }
+.chart .p-third { fill: var(--hot); }
+.chart .p-other { fill: var(--surface); stroke: var(--muted); stroke-width: 1.5; stroke-dasharray: 3 2; }
+.chart .ring-you { fill: none; stroke: var(--ink); stroke-width: 2; }
+.chart .pl { fill: var(--ink); font-size: 12px; font-weight: 700; }
+.legend .k-main { background: var(--accent); }
+.legend .k-third { background: var(--hot); }
+.legend .k-other { border: 1.5px dashed var(--muted); }
+
 /* Debrief */
 .bias-name { font-size: clamp(40px, 10vw, 58px); color: var(--accent); outline: none; }
 .definition { font-size: 20px; line-height: 1.45; background: var(--lavender); border-left: 4px solid var(--accent); border-radius: 0 10px 10px 0; padding: 12px 16px; }
@@ -290,7 +319,7 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
 
 @media (prefers-reduced-motion: reduce) {
   .wheel-g { transition-duration: .6s; }
-  .btn, .opt-btn, .prog { transition: none; }
+  .btn, .opt-btn, .prog, .plan { transition: none; }
 }
 @media (max-width: 420px) {
   .rail li { font-size: 11.5px; }
