@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-07 (Wason's 2-4-6 task).
 // Answers: `tests` is "a,b,c|a,b,c|…" in the order run, `rule` is the chosen rule id.

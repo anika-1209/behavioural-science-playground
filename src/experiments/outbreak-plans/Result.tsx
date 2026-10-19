@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { PLAN_TEXT, STUDY_SURE, choiceOf, frameOf, otherFrame, planName, wasPulled, type Frame } from './logic';
+import { PLAN_TEXT, STUDY_SURE, choiceOf, frameOf, otherFrame, planName, wasPulled, type Frame } from '../../../shared/experiments/outbreak-plans/logic';
 
 const X0 = 140;
 const X1 = 392;

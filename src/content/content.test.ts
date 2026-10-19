@@ -4,6 +4,7 @@ import { CATEGORIES } from './categories';
 import { PRIMER_CARDS } from './primer';
 import { builtDebriefIds, loadDebrief } from './debriefs';
 import { EXPERIMENTS } from '../experiments/registry';
+import { NO_VERSION, SUMMARIES } from '../../shared/summaries';
 
 const categoryIds = new Set(CATEGORIES.map((c) => c.id));
 const moduleIds = new Set(MODULES.map((m) => m.id));
@@ -26,6 +27,10 @@ describe('bias modules', () => {
   it.each(MODULES.filter((m) => m.status === 'ready'))('$id is fully built', (m) => {
     expect(EXPERIMENTS[m.id]).toBeDefined();
     expect(builtDebriefIds()).toContain(m.id);
+  });
+
+  it.each(MODULES.filter((m) => m.status === 'ready'))('$id has a summary over its own conditions', (m) => {
+    expect(SUMMARIES[m.id]?.versions).toEqual(m.conditions.length ? m.conditions : [NO_VERSION]);
   });
 });
 

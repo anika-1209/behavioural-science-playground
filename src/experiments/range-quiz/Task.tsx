@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { Answers } from '../../lib/progress';
 import type { TaskProps } from '../types';
-import { QUESTIONS, parseNumber } from './logic';
+import { QUESTIONS, parseNumber } from '../../../shared/experiments/range-quiz/logic';
 
 export function Task({ onComplete }: TaskProps) {
   const [index, setIndex] = useState(0);

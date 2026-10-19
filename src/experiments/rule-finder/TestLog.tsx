@@ -1,4 +1,4 @@
-import { fitsRule, formatTriple, type Triple } from './logic';
+import { fitsRule, formatTriple, type Triple } from '../../../shared/experiments/rule-finder/logic';
 
 export function TestLog({ tests, live }: { tests: Triple[]; live?: boolean }) {
   return (

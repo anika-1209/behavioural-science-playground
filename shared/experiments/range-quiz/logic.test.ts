@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 import { QUESTIONS, hits, parseNumber, wasPulled, whatHappened } from './logic';
 
 /** Ranges that catch the answer for the first `n` questions and miss the rest. */

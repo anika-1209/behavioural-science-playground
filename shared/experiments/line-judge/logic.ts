@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-09 (Asch's line task).
 // The "previous players" are scripted. This is an approved exception to P3-3

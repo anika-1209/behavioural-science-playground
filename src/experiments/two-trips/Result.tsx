@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { choiceOf, wasPulled } from './logic';
+import { choiceOf, wasPulled } from '../../../shared/experiments/two-trips/logic';
 
 export function Result({ answers }: ResultProps) {
   const choice = choiceOf(answers);

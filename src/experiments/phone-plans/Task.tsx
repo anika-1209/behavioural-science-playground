@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { TaskProps } from '../types';
-import { MENU, PLANS, versionOf } from './logic';
+import { MENU, PLANS, versionOf } from '../../../shared/experiments/phone-plans/logic';
 
 export function Task({ condition, onComplete }: TaskProps) {
   const firstRef = useRef<HTMLButtonElement>(null);

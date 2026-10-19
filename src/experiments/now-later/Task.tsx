@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Answers } from '../../lib/progress';
 import type { TaskProps } from '../types';
-import { BASE, ORDER, WHEN, keyOf, type Pick } from './logic';
+import { BASE, ORDER, WHEN, keyOf, type Pick } from '../../../shared/experiments/now-later/logic';
 
 export function Task({ onComplete }: TaskProps) {
   const [index, setIndex] = useState(0);

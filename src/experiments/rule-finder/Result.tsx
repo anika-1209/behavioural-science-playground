@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { CORRECT, noCount, ruleOf, testsOf } from './logic';
+import { CORRECT, noCount, ruleOf, testsOf } from '../../../shared/experiments/rule-finder/logic';
 import { TestLog } from './TestLog';
 
 export function Result({ answers }: ResultProps) {

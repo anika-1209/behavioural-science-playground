@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { TaskProps } from '../types';
 import { Wheel, rotationFor } from './Wheel';
-import { anchorFor, parseEstimate } from './logic';
+import { anchorFor, parseEstimate } from '../../../shared/experiments/wheel-estimate/logic';
 
 type Step = 'spin' | 'higher-lower' | 'estimate';
 

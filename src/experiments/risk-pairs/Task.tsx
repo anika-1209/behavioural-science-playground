@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Answers } from '../../lib/progress';
 import type { TaskProps } from '../types';
-import { PAIRS } from './logic';
+import { PAIRS } from '../../../shared/experiments/risk-pairs/logic';
 
 export function Task({ onComplete }: TaskProps) {
   // Left/right order is randomised per pair so position can't drive the pick.

@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { LATER, otherFlips, pickOf, presentFlips, type Horizon } from './logic';
+import { LATER, otherFlips, pickOf, presentFlips, type Horizon } from '../../../shared/experiments/now-later/logic';
 
 const ROWS: [Horizon, string][] = [
   ['near', 'today'],

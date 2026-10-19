@@ -1,7 +1,7 @@
 import type { ExperimentDefinition } from '../types';
 import { Task } from './Task';
 import { Result } from './Result';
-import { whatHappened } from './logic';
+import { whatHappened } from '../../../shared/experiments/range-quiz/logic';
 
 // exp-03 "Ninety percent sure": give 90% ranges for ten quantities.
 const rangeQuiz: ExperimentDefinition = { Task, Result, whatHappened };

@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { QUESTIONS, TARGET, formatValue, hits, isInside, rangeOf, wasPulled } from './logic';
+import { QUESTIONS, TARGET, formatValue, hits, isInside, rangeOf, wasPulled } from '../../../shared/experiments/range-quiz/logic';
 
 // One row per question, each on its own linear scale.
 const BX0 = 196;

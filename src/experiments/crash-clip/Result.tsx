@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { GLASS_YES, VERB_TEXT, sawGlass, verbOf, type Verb } from './logic';
+import { GLASS_YES, VERB_TEXT, sawGlass, verbOf, type Verb } from '../../../shared/experiments/crash-clip/logic';
 
 const X0 = 150;
 const X1 = 392;

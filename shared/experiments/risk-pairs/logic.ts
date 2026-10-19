@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-02.
 // Yearly US deaths, rounded. Sources: CDC (2022 final data; stings averaged

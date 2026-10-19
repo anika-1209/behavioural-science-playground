@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-05.
 // Two main plans for everyone, plus a third plan that is worse in every way than

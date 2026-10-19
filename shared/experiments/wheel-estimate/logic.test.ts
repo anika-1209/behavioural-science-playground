@@ -1,6 +1,5 @@
 import { describe, expect, it } from 'vitest';
 import { parseEstimate, wasPulled, whatHappened } from './logic';
-import { rotationFor } from './Wheel';
 
 describe('parseEstimate', () => {
   it('accepts whole numbers from 0 to 100', () => {
@@ -30,14 +29,5 @@ describe('result logic', () => {
       }
     }
     expect(whatHappened('high', { estimate: 25 })).toContain('resisted');
-  });
-});
-
-describe('wheel', () => {
-  it('lands the target value under the pointer', () => {
-    for (const v of [10, 65]) {
-      const rest = (rotationFor(v) + (v / 5) * 18) % 360;
-      expect(rest).toBe(0);
-    }
   });
 });

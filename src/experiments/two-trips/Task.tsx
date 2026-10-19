@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { TaskProps } from '../types';
-import type { Trip } from './logic';
+import type { Trip } from '../../../shared/experiments/two-trips/logic';
 
 const TICKETS: { trip: Trip; kind: string; place: string; paid: number; cta: string }[] = [
   { trip: 'city', kind: 'City break', place: 'Edinburgh', paid: 200, cta: 'Go to Edinburgh' },

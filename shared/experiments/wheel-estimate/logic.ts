@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-01.
 export const ANCHOR: Record<string, number> = { low: 10, high: 65 };

@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { PAIRS, lessCommon, moreCommon, optionById, score, wasPulled } from './logic';
+import { PAIRS, lessCommon, moreCommon, optionById, score, wasPulled } from '../../../shared/experiments/risk-pairs/logic';
 
 // Log scale from 1 to 100,000 deaths a year.
 const X0 = 22;

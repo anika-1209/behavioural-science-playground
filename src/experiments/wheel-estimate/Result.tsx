@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { STUDY_MEDIAN, TRUE_PCT, anchorFor } from './logic';
+import { STUDY_MEDIAN, TRUE_PCT, anchorFor } from '../../../shared/experiments/wheel-estimate/logic';
 
 const X = (v: number) => 24 + v * 3.52;
 const clampX = (x: number) => Math.max(36, Math.min(364, x));

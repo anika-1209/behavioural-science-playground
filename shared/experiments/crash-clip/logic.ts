@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-08.
 // Adapted from Loftus & Palmer (1974). The verb in the speed question is the only

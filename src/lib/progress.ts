@@ -2,7 +2,9 @@
 // No sign-in, no network. Every storage call is wrapped because localStorage
 // can be missing or throw (private windows, blocked site data).
 
-export type Answers = Record<string, string | number>;
+import type { Answers } from '../../shared/types';
+
+export type { Answers };
 
 export interface CompletedRecord {
   condition: string | null;

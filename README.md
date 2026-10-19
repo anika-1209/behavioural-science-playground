@@ -28,6 +28,8 @@ Stack: Vite, React 19, TypeScript, React Router. No backend; progress lives in t
 | Launch catalogue (teasers) | [src/content/modules.ts](src/content/modules.ts) |
 | Local, anonymous progress; condition assignment; reset | [src/lib/progress.ts](src/lib/progress.ts) |
 | Settings: show bias names, extend time, reset | [src/pages/Settings.tsx](src/pages/Settings.tsx) |
+| Each experiment's rules and result logic (shared with the v1.5 API) | `shared/experiments/<name>/logic.ts` |
+| "How others answered" summaries, per experiment (v1.5) | [shared/summaries.ts](shared/summaries.ts) |
 
 ### How the bias name stays hidden (P3-1)
 
@@ -41,6 +43,7 @@ Stack: Vite, React 19, TypeScript, React Router. No backend; progress lives in t
 Each bias needs three things. `exp-01` is the worked example.
 
 1. **Experiment** in `src/experiments/<name>/`: a `Task` component (calls `onComplete(answers)` once, on submit), a `Result` component for the reveal, and a `whatHappened(condition, answers)` function. None of these may name the bias. Register it in [src/experiments/registry.ts](src/experiments/registry.ts).
+   - Rules, stimuli and result logic go in `shared/experiments/<name>/logic.ts`, with no React or browser code, because the API imports it too. Add the experiment's summary to [shared/summaries.ts](shared/summaries.ts).
 2. **Debrief** in `src/content/debriefs/exp-NN.ts`, typed as `Debrief`. Add its loader line in [src/content/debriefs/index.ts](src/content/debriefs/index.ts).
 3. **Module**: set its entry in [src/content/modules.ts](src/content/modules.ts) to `status: 'ready'`.
 
@@ -49,5 +52,5 @@ Then run `npm test && npm run build`. The content tests check that every ready m
 ## Before launch
 
 - Study details and figures in the debriefs come from general knowledge and need expert review against the original papers (P3-6).
-- Open questions from the spec (platform, source of "how others answered" data, reviewer, classroom mode, languages) are still open.
+- Open questions from the spec (platform, reviewer, classroom mode, languages) are still open.
 - Hosting: the app uses browser routing, so the host must serve `index.html` for unknown paths (a single-page-app fallback).

@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { CRITICAL_COUNT, ROUNDS, correctOf, picksOf, wentWithGroup } from './logic';
+import { CRITICAL_COUNT, ROUNDS, correctOf, picksOf, wentWithGroup } from '../../../shared/experiments/line-judge/logic';
 
 export function Result({ answers }: ResultProps) {
   const picks = picksOf(answers);

@@ -1,5 +1,5 @@
 import type { ResultProps } from '../types';
-import { PLANS, TARGET, THIRD, choiceOf, otherVersion, planLabel, versionOf, wasPulled, type PlanId } from './logic';
+import { PLANS, TARGET, THIRD, choiceOf, otherVersion, planLabel, versionOf, wasPulled, type PlanId } from '../../../shared/experiments/phone-plans/logic';
 
 // Scatter: price across (£8–£24), data up (0–45 GB).
 const X = (p: number) => 56 + ((p - 8) / 16) * 320;

@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import type { TaskProps } from '../types';
-import { LETTERS, PLAYERS, REVEAL_MS, ROUNDS, type Letter } from './logic';
+import { LETTERS, PLAYERS, REVEAL_MS, ROUNDS, type Letter } from '../../../shared/experiments/line-judge/logic';
 
 // Lines stand vertically, bottom-aligned at y = 180.
 const VLine = ({ x, len }: { x: number; len: number }) => <line className="line" x1={x} x2={x} y1="180" y2={180 - len} />;

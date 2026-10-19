@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 import { LATER, ORDER, keyOf, otherFlips, presentFlips, wasPulled, whatHappened, type Horizon, type Pick } from './logic';
 
 const fill = (near: (a: number) => Pick, far: (a: number) => Pick): Answers =>

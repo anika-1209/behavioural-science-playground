@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-06.
 // Adapted from Arkes & Blumer (1985): the ski trips became Edinburgh (£200) and

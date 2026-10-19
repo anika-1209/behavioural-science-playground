@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { TaskProps } from '../types';
-import { PLAN_TEXT, SCENARIO, frameOf, type Choice } from './logic';
+import { PLAN_TEXT, SCENARIO, frameOf, type Choice } from '../../../shared/experiments/outbreak-plans/logic';
 
 export function Task({ condition, onComplete }: TaskProps) {
   const frame = frameOf(condition);

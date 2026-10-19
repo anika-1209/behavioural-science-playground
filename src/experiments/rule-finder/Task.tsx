@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { TaskProps } from '../types';
-import { MAX_TESTS, RULES, SEED, encodeTests, parseWhole, type Triple } from './logic';
+import { MAX_TESTS, RULES, SEED, encodeTests, parseWhole, type Triple } from '../../../shared/experiments/rule-finder/logic';
 import { TestLog } from './TestLog';
 
 const FIELDS = ['First', 'Second', 'Third'] as const;

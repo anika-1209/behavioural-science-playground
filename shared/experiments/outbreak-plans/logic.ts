@@ -1,4 +1,4 @@
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 
 // experimentConfig + resultLogic for exp-04.
 // Adapted from Tversky & Kahneman (1981): "Asian disease" became "a new disease"

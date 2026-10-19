@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Answers } from '../../lib/progress';
+import type { Answers } from '../../types';
 import { PAIRS, moreCommon, newsPicks, score, wasPulled, whatHappened } from './logic';
 
 const allNews: Answers = Object.fromEntries(PAIRS.map((p) => [p.id, p.news]));
