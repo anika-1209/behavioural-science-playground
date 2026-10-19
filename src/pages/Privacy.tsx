@@ -24,9 +24,9 @@ export function Privacy() {
           <li>which edition of the questions you answered, so changed questions start a fresh count</li>
         </ul>
         <p>
-          It also sends short usage notes: when you start or finish an experiment, when you read an explanation, and
-          whether you got the quiz question right. When you finish an experiment, it says how many you've finished
-          in this visit.
+          It also sends short usage notes: when you start or finish an experiment, when you open an explanation and
+          when you read to the end of it, and whether you got the quiz question right. When you finish an
+          experiment, it says how many you've finished in this visit.
         </p>
       </div>
 
@@ -42,7 +42,11 @@ export function Privacy() {
 
       <div className="db-block">
         <h3>If you say no</h3>
-        <p>Nothing is sent: no answers and no usage notes. Until you answer the question, nothing is sent either.</p>
+        <p>
+          Nothing is sent: no answers and no usage notes. Until you answer the question, nothing is sent either. The
+          usage notes from your first experiment wait in the page's memory until you answer: yes sends them along with
+          your answers, and no throws them away.
+        </p>
         <p>Everyone sees how others answered, whatever they chose.</p>
       </div>
 
@@ -57,8 +61,9 @@ export function Privacy() {
       <div className="db-block">
         <h3>How long answers are kept</h3>
         <p>
-          Individual answers are deleted after 12 months. The totals are kept. Because nothing identifies you, we
-          can't find your answers again to delete them early.
+          Individual answers and usage notes are deleted after 12 months, and the totals are worked out from the last
+          12 months of answers. Because nothing identifies you, we can't find your answers again to delete them
+          early.
         </p>
       </div>
 

@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { progress } from '../lib/progress';
+import { sharer } from '../lib/share';
 
 // Spec "Backend: Consent": asked once, on the first result screen, below the
 // result so it can't affect the answers already given.
@@ -20,6 +21,7 @@ export function ConsentPrompt({ moduleId }: { moduleId: string }) {
 
   const answer = (a: 'yes' | 'no') => {
     progress.setConsent(a, moduleId);
+    sharer.consentChanged(moduleId);
     setAnswered(a);
   };
 

@@ -10,13 +10,35 @@ interface Props {
   whatHappened: string;
   quizAnswer?: string;
   onQuizAnswer: (answerId: string, correct: boolean) => void;
+  /** Called once, when the debrief is shown (the read-through metric's denominator). */
+  onOpened?: () => void;
+  /** Called once, when "How to counter it" scrolls into view (the read-through metric). */
+  onReadThrough?: () => void;
 }
 
 // The fixed debrief structure from Feature 3. Every bias renders every section
 // in this order; the quiz is the only optional one.
-export function DebriefView({ moduleId, debrief: d, whatHappened, quizAnswer, onQuizAnswer }: Props) {
+export function DebriefView({ moduleId, debrief: d, whatHappened, quizAnswer, onQuizAnswer, onOpened, onReadThrough }: Props) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => headingRef.current?.focus(), []);
+  const openedRef = useRef(onOpened);
+  useEffect(() => openedRef.current?.(), []);
+
+  const counterRef = useRef<HTMLElement>(null);
+  const readRef = useRef(onReadThrough);
+  readRef.current = onReadThrough;
+  useEffect(() => {
+    const el = counterRef.current;
+    if (!el || typeof IntersectionObserver === 'undefined') return;
+    const io = new IntersectionObserver((entries) => {
+      if (entries.some((e) => e.isIntersecting)) {
+        readRef.current?.();
+        io.disconnect();
+      }
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   const related = getModule(moduleId)?.relatedBiasIds.map(getModule).find((m) => m);
 
@@ -61,7 +83,7 @@ export function DebriefView({ moduleId, debrief: d, whatHappened, quizAnswer, on
         </ul>
       </section>
 
-      <section className="db-block">
+      <section className="db-block" ref={counterRef}>
         <h3>How to counter it</h3>
         <ul>
           {d.counterStrategies.map((s, i) => (

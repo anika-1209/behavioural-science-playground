@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'react-router';
 import { progress } from '../lib/progress';
+import { sharer } from '../lib/share';
 import { useProgress, useTitle } from '../lib/hooks';
 
 export function Settings() {
@@ -48,7 +49,10 @@ export function Settings() {
           type="checkbox"
           id="set-share"
           checked={consent === 'yes'}
-          onChange={(e) => progress.setConsent(e.target.checked ? 'yes' : 'no')}
+          onChange={(e) => {
+            progress.setConsent(e.target.checked ? 'yes' : 'no');
+            sharer.consentChanged();
+          }}
         />
         <span>
           <b>Add my anonymous answers to the totals</b>

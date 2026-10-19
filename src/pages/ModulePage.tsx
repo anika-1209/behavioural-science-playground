@@ -6,6 +6,7 @@ import { ProgressRail, type Stage } from '../components/ProgressRail';
 import { DebriefView } from '../components/DebriefView';
 import { ConsentPrompt } from '../components/ConsentPrompt';
 import { progress } from '../lib/progress';
+import { sharer } from '../lib/share';
 import { useDebrief, useProgress, useTitle } from '../lib/hooks';
 
 // Feature 3: intro → experiment → result → debrief. The tab title and URL use
@@ -61,6 +62,7 @@ export function ModulePage() {
               className="btn"
               onClick={() => {
                 setCondition(progress.conditionFor(module.id, module.conditions));
+                sharer.started(module.id);
                 go('experiment');
               }}
             >
@@ -76,6 +78,8 @@ export function ModulePage() {
             onComplete={(answers) => {
               setAskConsent(progress.getState().consent === null);
               progress.complete(module.id, condition, answers);
+              sharer.finished(module.id);
+              void sharer.flushAnswers();
               go('result');
             }}
           />
@@ -101,7 +105,12 @@ export function ModulePage() {
                 debrief={debrief}
                 whatHappened={experiment.whatHappened(record.condition, record.answers)}
                 quizAnswer={record.quiz?.answerId}
-                onQuizAnswer={(answerId, correct) => progress.recordQuiz(module.id, answerId, correct)}
+                onQuizAnswer={(answerId, correct) => {
+                  progress.recordQuiz(module.id, answerId, correct);
+                  sharer.quizAnswered(module.id, correct);
+                }}
+                onOpened={() => sharer.debriefOpened(module.id)}
+                onReadThrough={() => sharer.debriefRead(module.id)}
               />
             )}
           </>

@@ -4,6 +4,7 @@
 // can be missing or throw (private windows, blocked site data).
 
 import type { Answers } from '../../shared/types';
+import { CONTENT_VERSION } from '../../shared/api';
 
 export type { Answers };
 
@@ -16,6 +17,8 @@ export interface CompletedRecord {
   firstPlay?: boolean;
   /** May be added to the anonymous totals: a first play the player agreed to share. */
   share?: boolean;
+  /** The edition of the questions this play answered (shared/api.ts). */
+  contentVersion?: number;
 }
 
 /** Spec "Backend: Consent". null until the player answers the question after their first result. */
@@ -137,6 +140,7 @@ export function createProgressStore(backing: KeyValueStore | null = browserStore
             completedAt: now.toISOString(),
             firstPlay,
             share: firstPlay && state.consent === 'yes',
+            contentVersion: CONTENT_VERSION[moduleId],
           },
         },
         played: firstPlay ? [...state.played, moduleId] : state.played,

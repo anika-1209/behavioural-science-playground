@@ -14,6 +14,8 @@ export const GLASS_YES: Record<Verb, number> = { smashed: 32, hit: 14 };
 export const SPEED: Record<Verb, number> = { smashed: 40.5, hit: 34 };
 
 export const CLIP_MS = 4400;
+/** Options for the colour question. */
+export const COLOURS = ['blue', 'red', 'green', 'white'];
 
 export const verbOf = (condition: string | null): Verb => (condition === 'hit' ? 'hit' : 'smashed');
 export const sawGlass = (answers: Answers) => answers.glass === 'yes';

@@ -1,0 +1,23 @@
+# The v1.5 API (spec, "Backend"). The site itself is served by Cloudflare Pages.
+# No secrets here: the repository is public. The D1 database id is not a secret.
+name = "bsp-api"
+main = "worker/index.ts"
+compatibility_date = "2026-10-01"
+
+# Recompute summaries and delete answers older than 12 months.
+[triggers]
+crons = ["*/15 * * * *"]
+
+[[d1_databases]]
+binding = "DB"
+database_name = "bsp"
+database_id = "00000000-0000-0000-0000-000000000000" # replace with the id from `wrangler d1 create bsp`
+migrations_dir = "worker/migrations"
+
+# Turn off request logging so IP addresses aren't kept (spec, "What is sent").
+[observability]
+enabled = false
+
+[vars]
+# Set to the site's origin if the API is served from a different domain; leave empty when /api/* is routed on the same domain.
+ALLOWED_ORIGIN = ""

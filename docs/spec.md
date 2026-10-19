@@ -250,7 +250,7 @@ The backend does two jobs: it shows live "how others answered" numbers on the re
 ### Consent
 
 - After a player's first experiment, the result screen asks a yes-or-no question: "Add your anonymous answers to the totals?" It sits below the result, so it can't affect the answers already given.
-- Until the player says yes, nothing is sent: no answers and no usage events.
+- Until the player says yes, nothing is sent: no answers and no usage events. Events from before the answer are held in the page's memory only; a yes on the result screen sends those for the experiment just finished, and anything else is dropped.
 - Yes covers the experiment just finished and every one after it. No hides the question for good. Either answer can be changed in Settings.
 - Everyone sees the live numbers, whatever they answered.
 - The primer's privacy note and Settings explain what is sent, in plain language.
@@ -260,7 +260,7 @@ The backend does two jobs: it shows live "how others answered" numbers on the re
 | Request | Contents |
 | --- | --- |
 | Answer | Experiment id (e.g. `exp-04`), version (e.g. `loss`), the answers the app already stores, content version |
-| Usage event | Experiment id, event type (`started`, `finished`, `debrief-read`, `quiz-answered` with right or wrong), and for `finished` how many experiments this browser has finished in the current visit |
+| Usage event | Experiment id, event type (`started`, `finished`, `debrief-opened`, `debrief-read`, `quiz-answered` with right or wrong), and for `finished` how many experiments this browser has finished in the current visit |
 
 Never sent: names, accounts, IP addresses (not logged or stored), device or browser IDs, or anything that links one request to another. Bias names never appear in requests or responses (P3-1).
 
@@ -297,7 +297,7 @@ Each summary reuses the experiment's own result logic (`logic.ts`), moved into c
 ### Privacy and retention
 
 - A short privacy notice, linked from the primer and Settings.
-- Raw answers are deleted after 12 months; summaries are kept.
+- Raw answers and usage events are deleted after 12 months. Summaries are recomputed from the answers still stored, so they cover the last 12 months. Keeping all-time totals would mean storing summaries as running counts instead (not planned for v1.5).
 - Because nothing identifies a player, individual answers cannot be found again to delete. The privacy notice says so.
 - To confirm in the privacy review: the browser note used for "first play only" is part of the feature and needs no separate consent.
 

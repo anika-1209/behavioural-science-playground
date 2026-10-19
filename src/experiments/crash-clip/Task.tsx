@@ -2,11 +2,10 @@ import { useEffect, useRef, useState, type FormEvent } from 'react';
 import type { Answers } from '../../lib/progress';
 import type { TaskProps } from '../types';
 import { Clip } from './Clip';
-import { CLIP_MS, VERB_TEXT, parseSpeed, verbOf } from '../../../shared/experiments/crash-clip/logic';
+import { CLIP_MS, COLOURS, VERB_TEXT, parseSpeed, verbOf } from '../../../shared/experiments/crash-clip/logic';
 
 type Step = 'clip' | 'colour' | 'speed' | 'light' | 'glass';
 
-const COLOURS = ['blue', 'red', 'green', 'white'];
 const cap = (s: string) => s.charAt(0).toUpperCase() + s.slice(1);
 
 export function Task({ condition, onComplete }: TaskProps) {

@@ -25,6 +25,7 @@ describe('progress store', () => {
       completedAt: '2026-10-17T10:00:00.000Z',
       firstPlay: true,
       share: false,
+      contentVersion: 1,
     });
   });
 
