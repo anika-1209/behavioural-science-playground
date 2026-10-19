@@ -37,7 +37,10 @@ export function Privacy() {
           <li>any ID for your device or browser</li>
           <li>anything that links one of your answers to another</li>
         </ul>
-        <p>We don't log or store IP addresses.</p>
+        <p>
+          We don't log or store IP addresses. To block floods of fake answers, Cloudflare counts how many requests
+          come from each internet address in a minute. That count is kept only in memory, for that minute.
+        </p>
       </div>
 
       <div className="db-block">

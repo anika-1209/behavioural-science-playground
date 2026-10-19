@@ -1,0 +1,27 @@
+# Spec "Backend: Engineering": the tests run on every push.
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version-file: .nvmrc # 22.13 or later: the API tests use node:sqlite
+          cache: npm
+      - run: npm ci
+      - run: npm test
+      # Typechecks the app and the Worker, builds, and fails if a bias name leaks (P3-1).
+      - run: npm run build
+      # Checks the Worker bundles for Cloudflare, without deploying anything.
+      - run: npx wrangler deploy --dry-run --outdir /tmp/worker-build
+        env:
+          WRANGLER_SEND_METRICS: 'false'

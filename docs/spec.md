@@ -244,7 +244,7 @@ The backend does two jobs: it shows live "how others answered" numbers on the re
 | --- | --- |
 | Where "how others answered" comes from | Both. Study figures until an experiment has enough live answers (at least 50 per version), then live numbers. Exp-05 shows only the direction of the effect until its live numbers arrive, since it has no study figures. |
 | Return rate | Not measured. No ID of any kind is stored or sent, so data stays fully anonymous. |
-| Hosting | Cloudflare: Pages for the site, Workers for the API, D1 for the database. |
+| Hosting | Cloudflare: Pages for the site, Workers for the API, D1 for the database, on Cloudflare's free addresses (`pages.dev` and `workers.dev`). Steps in [deploy.md](deploy.md). |
 | Consent | Opt-in, asked once after the player's first result (see below). |
 
 ### Consent
@@ -291,7 +291,7 @@ Each summary reuses the experiment's own result logic (`logic.ts`), moved into c
 
 - **First play only.** Only a player's first completion of each experiment is sent. On a replay they know the trick. The browser keeps a note of which experiments it has already sent, next to the progress it already stores.
 - Answers are checked against each experiment's fixed format; anything else is rejected.
-- Rate limiting and basic bot filtering at the edge.
+- Rate limiting in the Worker: at most 30 answers and events a minute per IP address, counted in Cloudflare's memory only and never stored or logged. Answers and events must come from the site's own address. The free addresses don't offer Cloudflare's bot rules, so there is no further bot filtering in v1.5.
 - Answers carry a content version, so changing a question or figure starts a fresh count instead of mixing old and new.
 
 ### Privacy and retention

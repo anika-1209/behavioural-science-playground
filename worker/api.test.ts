@@ -153,3 +153,36 @@ describe('CORS', () => {
     expect(res.headers.get('Access-Control-Allow-Origin')).toBeNull();
   });
 });
+
+describe('POST guards', () => {
+  const site = 'https://bsp.pages.dev';
+
+  it('rejects POSTs from other origins, or with no origin, when one is configured', async () => {
+    const { post, raw } = setup({ ALLOWED_ORIGIN: site });
+    expect((await post('/api/answers', answer('sure'), { Origin: 'https://evil.example' })).status).toBe(403);
+    expect((await post('/api/events', { experimentId: 'exp-01', type: 'started' })).status).toBe(403);
+    expect((await post('/api/answers', answer('sure'), { Origin: site })).status).toBe(204);
+    expect(raw.prepare('SELECT COUNT(*) AS n FROM answers').get()).toEqual({ n: 1 });
+  });
+
+  it('rate-limits POSTs by IP, without storing it', async () => {
+    const counts = new Map<string, number>();
+    const LIMITER = {
+      limit: async ({ key }: { key: string }) => {
+        counts.set(key, (counts.get(key) ?? 0) + 1);
+        return { success: counts.get(key)! <= 2 };
+      },
+    } as RateLimit;
+    const { post, call, raw } = setup({ LIMITER });
+    const ip = { 'CF-Connecting-IP': '203.0.113.7' };
+    expect((await post('/api/answers', answer('sure'), ip)).status).toBe(204);
+    expect((await post('/api/events', { experimentId: 'exp-01', type: 'started' }, ip)).status).toBe(204);
+    const blocked = await post('/api/answers', answer('sure'), ip);
+    expect(blocked.status).toBe(429);
+    expect((await post('/api/answers', answer('sure'), { 'CF-Connecting-IP': '198.51.100.1' })).status).toBe(204);
+    expect((await call('/api/stats/exp-04', { headers: ip })).status).toBe(200); // reads aren't limited
+    const stored = JSON.stringify([raw.prepare('SELECT * FROM answers').all(), raw.prepare('SELECT * FROM events').all()]);
+    expect(stored).not.toContain('203.0.113.7');
+  });
+});
+

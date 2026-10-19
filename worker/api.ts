@@ -3,12 +3,19 @@ import { SUMMARIES, isLive, summarise, type ExperimentSummary, type Play } from 
 
 // The v1.5 API (spec, "Backend"). Kept free of Cloudflare-only globals so the
 // tests can run it against a local SQLite database; index.ts adds edge caching.
-// Nothing about the requester is read or stored: no IP, headers or cookies.
+// Nothing about the requester is stored. The only thing read is the IP address,
+// as the rate limiter's key: Cloudflare counts it in memory for a minute, and
+// it never reaches the database or a log.
 
 export interface Env {
   DB: D1Database;
-  /** The site's origin, if the API is served from a different domain. */
+  /**
+   * The site's origin, since the API is served from a different domain. When
+   * set, POSTs must come from it: a basic filter against scripted submissions.
+   */
   ALLOWED_ORIGIN?: string;
+  /** Cloudflare's rate limiter for POSTs (wrangler.toml). Optional so tests and local runs can skip it. */
+  LIMITER?: RateLimit;
 }
 
 /** How long browsers and the edge may reuse a stats response, in seconds. */
@@ -60,8 +67,22 @@ export async function handle(req: Request, env: Env, now = new Date()): Promise<
   return res;
 }
 
+/** Origin check and rate limit for POSTs. Returns an error response, or null to carry on. */
+async function guardPost(req: Request, env: Env): Promise<Response | null> {
+  if (env.ALLOWED_ORIGIN && req.headers.get('Origin') !== env.ALLOWED_ORIGIN) return error(403, 'Wrong origin.');
+  if (env.LIMITER) {
+    const { success } = await env.LIMITER.limit({ key: req.headers.get('CF-Connecting-IP') ?? 'unknown' });
+    if (!success) return error(429, 'Too many requests. Try again in a minute.');
+  }
+  return null;
+}
+
 async function route(req: Request, env: Env, now: Date): Promise<Response> {
   const { pathname } = new URL(req.url);
+  if (req.method === 'POST' && (pathname === '/api/answers' || pathname === '/api/events')) {
+    const blocked = await guardPost(req, env);
+    if (blocked) return blocked;
+  }
 
   if (pathname === '/api/answers') {
     if (req.method !== 'POST') return error(405, 'Use POST.');

@@ -18,6 +18,15 @@ migrations_dir = "worker/migrations"
 [observability]
 enabled = false
 
+# Rate limit for POST /api/answers and /api/events, per IP address, counted in
+# Cloudflare's memory only. A real player sends a handful of requests a minute.
+[[ratelimits]]
+name = "LIMITER"
+namespace_id = "1001"
+simple = { limit = 30, period = 60 }
+
 [vars]
-# Set to the site's origin if the API is served from a different domain; leave empty when /api/* is routed on the same domain.
-ALLOWED_ORIGIN = ""
+# The site's address. The site and API are on different free Cloudflare
+# addresses, so this allows the site's requests (CORS) and rejects POSTs from
+# anywhere else. Replace with your Pages address, e.g. https://bsp.pages.dev
+ALLOWED_ORIGIN = "https://REPLACE-ME.pages.dev"

@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "dev:api": "wrangler d1 migrations apply bsp --local && wrangler dev",
+    "dev:api": "wrangler d1 migrations apply bsp --local && wrangler dev --var ALLOWED_ORIGIN:http://localhost:5173",
     "build": "tsc --noEmit && tsc --noEmit -p worker && vite build && node scripts/check-leak.mjs",
     "preview": "vite preview",
     "typecheck": "tsc --noEmit && tsc --noEmit -p worker",

@@ -53,6 +53,7 @@ A Cloudflare Worker ([worker/](worker/), configured in [wrangler.toml](wrangler.
 - `POST /api/events` stores one usage event: `started`, `finished`, `debrief-opened`, `debrief-read` or `quiz-answered`. The app holds events from before the consent question is answered in memory only, and sends them only on a yes for that experiment.
 - `GET /api/stats/:experimentId` returns each version's summary and play count, cached for 5 minutes. `live` turns true once every version has 50 plays.
 - Every 15 minutes, a scheduled job deletes answers and events older than 12 months and recomputes the summaries.
+- POSTs must come from the site's address (`ALLOWED_ORIGIN`) and are rate-limited to 30 a minute per IP address, counted in Cloudflare's memory only.
 
 Rows store only the day they arrived: no IP, no device or session ID. When you change an experiment's questions, options or study figures, bump its number in `CONTENT_VERSION` ([shared/api.ts](shared/api.ts)) so the count starts fresh.
 
@@ -73,4 +74,4 @@ Then run `npm test && npm run build`. The content tests check that every ready m
 
 - Study details and figures in the debriefs come from general knowledge and need expert review against the original papers (P3-6).
 - Open questions from the spec (platform, reviewer, classroom mode, languages) are still open.
-- Hosting: the app uses browser routing, so the host must serve `index.html` for unknown paths (a single-page-app fallback).
+- Deploying: follow [docs/deploy.md](docs/deploy.md). It covers creating the database, deploying the API and connecting the site to Cloudflare Pages.
