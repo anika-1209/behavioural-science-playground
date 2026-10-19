@@ -224,13 +224,93 @@ The playground should feel like a game but behave like a responsible research-li
 **Privacy**
 
 - No sign-in and no personal data in v1; progress lives in local storage.
-- Any aggregate statistics use anonymous, opt-in responses only, with a plain-language notice in the primer.
+- Any aggregate statistics use anonymous, opt-in responses only. Players are asked once, after their first result, and a plain-language notice sits in the primer and Settings (see "Backend").
 
 **Ethics**
 
 - Withholding the bias name is the only concealment allowed; no deceptive feedback about the user's performance.
 - Avoid sensitive stimuli (e.g. real tragedies, health conditions of individuals); the framing-effect scenario uses a hypothetical.
 - Each debrief links to further reading so users can verify claims.
+
+## Backend: anonymous aggregate results (v1.5)
+
+*Decided 2026-10-19. Not built yet.*
+
+The backend does two jobs: it shows live "how others answered" numbers on the result and debrief screens, and it measures the success metrics. It stores no personal data and links nothing to a person.
+
+### Decisions
+
+| Question | Decision |
+| --- | --- |
+| Where "how others answered" comes from | Both. Study figures until an experiment has enough live answers (at least 50 per version), then live numbers. Exp-05 shows only the direction of the effect until its live numbers arrive, since it has no study figures. |
+| Return rate | Not measured. No ID of any kind is stored or sent, so data stays fully anonymous. |
+| Hosting | Cloudflare: Pages for the site, Workers for the API, D1 for the database. |
+| Consent | Opt-in, asked once after the player's first result (see below). |
+
+### Consent
+
+- After a player's first experiment, the result screen asks a yes-or-no question: "Add your anonymous answers to the totals?" It sits below the result, so it can't affect the answers already given.
+- Until the player says yes, nothing is sent: no answers and no usage events.
+- Yes covers the experiment just finished and every one after it. No hides the question for good. Either answer can be changed in Settings.
+- Everyone sees the live numbers, whatever they answered.
+- The primer's privacy note and Settings explain what is sent, in plain language.
+
+### What is sent
+
+| Request | Contents |
+| --- | --- |
+| Answer | Experiment id (e.g. `exp-04`), version (e.g. `loss`), the answers the app already stores, content version |
+| Usage event | Experiment id, event type (`started`, `finished`, `debrief-read`, `quiz-answered` with right or wrong), and for `finished` how many experiments this browser has finished in the current visit |
+
+Never sent: names, accounts, IP addresses (not logged or stored), device or browser IDs, or anything that links one request to another. Bias names never appear in requests or responses (P3-1).
+
+### API (Cloudflare Workers)
+
+- `POST /api/answers`: validates the answers against that experiment's format and stores them.
+- `POST /api/events`: stores one usage event.
+- `GET /api/stats/:experimentId`: returns the summary for each version, with counts. Cached at the edge; summaries are recomputed on a schedule rather than for each request.
+
+### Summary for each experiment
+
+Each summary reuses the experiment's own result logic (`logic.ts`), moved into code that both the app and the API import, so there is one copy of each rule.
+
+| Experiment | Summary shown |
+| --- | --- |
+| exp-01 | Median guess for each wheel number |
+| exp-02 | Share choosing the newsworthy cause, per pair |
+| exp-03 | Average number of ranges that caught the answer |
+| exp-04 | Share choosing the sure plan, per wording |
+| exp-05 | Share choosing the targeted plan, per version |
+| exp-06 | Share choosing Edinburgh |
+| exp-07 | Share who found the rule |
+| exp-08 | Share reporting broken glass, per verb; median speed per verb |
+| exp-09 | Average rounds going with the group; share going along at least once |
+| exp-10 | Share with at least one flip toward the present |
+
+### Data quality
+
+- **First play only.** Only a player's first completion of each experiment is sent. On a replay they know the trick. The browser keeps a note of which experiments it has already sent, next to the progress it already stores.
+- Answers are checked against each experiment's fixed format; anything else is rejected.
+- Rate limiting and basic bot filtering at the edge.
+- Answers carry a content version, so changing a question or figure starts a fresh count instead of mixing old and new.
+
+### Privacy and retention
+
+- A short privacy notice, linked from the primer and Settings.
+- Raw answers are deleted after 12 months; summaries are kept.
+- Because nothing identifies a player, individual answers cannot be found again to delete. The privacy notice says so.
+- To confirm in the privacy review: the browser note used for "first play only" is part of the feature and needs no separate consent.
+
+### Engineering
+
+- D1 schema with versioned migrations.
+- API tests, and the existing tests run on every push with GitHub Actions.
+- No keys or secrets in the repository (it is public). Configuration lives in Cloudflare environment settings.
+- Pages serves `index.html` for unknown paths, which the app's routing needs.
+
+### Out of scope for v1.5
+
+Accounts, return-rate tracking, classroom mode and live updates. These would need IDs or real-time connections and belong to v2.
 
 ## Success metrics
 
@@ -242,7 +322,7 @@ Success means users finish experiments, understand the bias, and come back for m
 | Debrief read-through | Debriefs scrolled to "How to counter it" / debriefs opened | ≥ 60% |
 | Comprehension | Correct answers on the optional quiz | ≥ 70% |
 | Biases per session | Median biases completed per visit | ≥ 2 |
-| Return rate | Users returning within 14 days | ≥ 20% |
+| Return rate | Users returning within 14 days | Not measured: data stays fully anonymous (see "Backend") |
 | Effect replication | Share of experiments where aggregate data shows the expected effect direction | 10 of 10 biases |
 
 ## Open questions and roadmap
@@ -250,7 +330,7 @@ Success means users finish experiments, understand the bias, and come back for m
 **Open questions**
 
 - [ ] Platform: responsive web app only, or also native mobile?
-- [ ] Should aggregate "how others answered" data come from live users, published studies, or both at launch?
+- [x] Should aggregate "how others answered" data come from live users, published studies, or both at launch? **Both** (see "Backend").
 - [ ] Who reviews debrief content for scientific accuracy, and how often?
 - [ ] Is an educator/classroom mode (shared session, live group results) in scope for v1 or v2?
 - [ ] Target languages beyond English?
