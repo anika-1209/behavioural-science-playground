@@ -4,6 +4,7 @@ import { Primer } from './pages/Primer';
 import { Hub } from './pages/Hub';
 import { ModulePage } from './pages/ModulePage';
 import { Settings } from './pages/Settings';
+import { Privacy } from './pages/Privacy';
 import { useProgress } from './lib/hooks';
 
 // First visit → primer; returning visit → hub (Feature 1 acceptance criteria).
@@ -22,6 +23,7 @@ export function App() {
           <Route path="hub" element={<Hub />} />
           <Route path="play/:id" element={<ModulePage />} />
           <Route path="settings" element={<Settings />} />
+          <Route path="privacy" element={<Privacy />} />
           <Route
             path="*"
             element={

@@ -1,5 +1,6 @@
 // Per-user progress, kept in this browser only (P2-2, spec "Privacy").
-// No sign-in, no network. Every storage call is wrapped because localStorage
+// No sign-in. Nothing here talks to the network: the v1.5 sender reads
+// `consent`, `share` and `sent` to decide what it may send. Every storage call is wrapped because localStorage
 // can be missing or throw (private windows, blocked site data).
 
 import type { Answers } from '../../shared/types';
@@ -11,7 +12,14 @@ export interface CompletedRecord {
   answers: Answers;
   completedAt: string;
   quiz?: { answerId: string; correct: boolean };
+  /** True if this was the first time this browser finished the experiment. */
+  firstPlay?: boolean;
+  /** May be added to the anonymous totals: a first play the player agreed to share. */
+  share?: boolean;
 }
+
+/** Spec "Backend: Consent". null until the player answers the question after their first result. */
+export type Consent = 'yes' | 'no' | null;
 
 export interface Settings {
   /** P2-3: show bias names on uncompleted hub cards (for educators and revision). */
@@ -27,6 +35,11 @@ export interface ProgressState {
   conditions: Record<string, string>;
   completed: Record<string, CompletedRecord>;
   settings: Settings;
+  consent: Consent;
+  /** Experiments this browser has ever finished. Survives reset, so a replay is never a first play. */
+  played: string[];
+  /** Experiments whose first play has been sent. Survives reset. */
+  sent: string[];
 }
 
 export interface KeyValueStore {
@@ -43,6 +56,9 @@ export const emptyState = (): ProgressState => ({
   conditions: {},
   completed: {},
   settings: { showBiasNames: false, extendTime: false },
+  consent: null,
+  played: [],
+  sent: [],
 });
 
 function browserStore(): KeyValueStore | null {
@@ -64,7 +80,14 @@ export function createProgressStore(backing: KeyValueStore | null = browserStore
       const parsed = JSON.parse(raw) as Partial<ProgressState>;
       if (parsed.version !== 1) return emptyState();
       const base = emptyState();
-      return { ...base, ...parsed, settings: { ...base.settings, ...parsed.settings } };
+      const completed = parsed.completed ?? {};
+      return {
+        ...base,
+        ...parsed,
+        settings: { ...base.settings, ...parsed.settings },
+        // Progress saved before v1.5 has no `played`: everything completed counts as played.
+        played: parsed.played ?? Object.keys(completed),
+      };
     } catch {
       return emptyState();
     }
@@ -103,13 +126,40 @@ export function createProgressStore(backing: KeyValueStore | null = browserStore
 
     /** Called when the experiment is submitted; unlocks the debrief (P3-5). */
     complete(moduleId: string, condition: string | null, answers: Answers, now = new Date()) {
+      const firstPlay = !state.played.includes(moduleId);
       write({
         ...state,
         completed: {
           ...state.completed,
-          [moduleId]: { condition, answers, completedAt: now.toISOString() },
+          [moduleId]: {
+            condition,
+            answers,
+            completedAt: now.toISOString(),
+            firstPlay,
+            share: firstPlay && state.consent === 'yes',
+          },
         },
+        played: firstPlay ? [...state.played, moduleId] : state.played,
       });
+    },
+
+    /**
+     * Records the player's answer to "Add your anonymous answers to the totals?".
+     * Yes covers `justFinished` (the experiment whose result screen asked) and
+     * every experiment after it, never earlier ones.
+     */
+    setConsent(consent: 'yes' | 'no', justFinished?: string) {
+      const rec = justFinished ? state.completed[justFinished] : undefined;
+      const completed =
+        rec && consent === 'yes' && rec.firstPlay
+          ? { ...state.completed, [justFinished!]: { ...rec, share: true } }
+          : state.completed;
+      write({ ...state, consent, completed });
+    },
+
+    /** The sender calls this once an experiment's first play is stored. */
+    markSent(moduleId: string) {
+      if (!state.sent.includes(moduleId)) write({ ...state, sent: [...state.sent, moduleId] });
     },
 
     recordQuiz(moduleId: string, answerId: string, correct: boolean) {
@@ -125,9 +175,10 @@ export function createProgressStore(backing: KeyValueStore | null = browserStore
       write({ ...state, settings: { ...state.settings, ...patch } });
     },
 
-    /** P2-5. Keeps settings and the primer flag; clears answers and completions. */
+    /** P2-5. Clears answers and completions. Keeps settings, the primer flag, consent and the first-play notes. */
     reset() {
-      write({ ...emptyState(), seenPrimer: state.seenPrimer, settings: state.settings });
+      const { seenPrimer, settings, consent, played, sent } = state;
+      write({ ...emptyState(), seenPrimer, settings, consent, played, sent });
     },
   };
 }

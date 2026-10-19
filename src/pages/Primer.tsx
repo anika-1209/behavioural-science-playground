@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { PRIMER_CARDS } from '../content/primer';
 import { progress } from '../lib/progress';
 import { useTitle } from '../lib/hooks';
@@ -36,6 +36,11 @@ export function Primer() {
           {p}
         </p>
       ))}
+      {card.link && (
+        <p className="note">
+          <Link to={card.link.to}>{card.link.label}</Link>
+        </p>
+      )}
       <div className="row">
         {i > 0 && (
           <button className="btn ghost" onClick={() => setI(i - 1)}>

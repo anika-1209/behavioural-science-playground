@@ -23,6 +23,8 @@ describe('progress store', () => {
       condition: 'low',
       answers: { estimate: 20 },
       completedAt: '2026-10-17T10:00:00.000Z',
+      firstPlay: true,
+      share: false,
     });
   });
 
@@ -84,5 +86,76 @@ describe('progress store', () => {
     off();
     s.updateSettings({ showBiasNames: true });
     expect(calls).toBe(1);
+  });
+});
+
+describe('consent and first plays (spec "Backend")', () => {
+  it('starts unasked, with nothing played or sent', () => {
+    const st = createProgressStore(memory()).getState();
+    expect(st.consent).toBeNull();
+    expect(st.played).toEqual([]);
+    expect(st.sent).toEqual([]);
+  });
+
+  it('treats progress saved before v1.5 as already played', () => {
+    const backing = memory();
+    backing.setItem(
+      'bsp-progress',
+      JSON.stringify({ version: 1, completed: { 'exp-02': { condition: null, answers: {}, completedAt: 'x' } } }),
+    );
+    const s = createProgressStore(backing);
+    expect(s.getState().played).toEqual(['exp-02']);
+    s.complete('exp-02', null, {});
+    expect(s.getState().completed['exp-02']?.firstPlay).toBe(false);
+  });
+
+  it('yes on the result screen covers the experiment just finished', () => {
+    const s = createProgressStore(memory());
+    s.complete('exp-01', 'low', { estimate: 20 });
+    expect(s.getState().completed['exp-01']?.share).toBe(false);
+    s.setConsent('yes', 'exp-01');
+    expect(s.getState().consent).toBe('yes');
+    expect(s.getState().completed['exp-01']?.share).toBe(true);
+  });
+
+  it('yes covers later first plays but not earlier ones', () => {
+    const s = createProgressStore(memory());
+    s.complete('exp-01', 'low', { estimate: 20 });
+    s.setConsent('yes'); // from Settings: no experiment just finished
+    s.complete('exp-02', null, {});
+    expect(s.getState().completed['exp-01']?.share).toBe(false);
+    expect(s.getState().completed['exp-02']?.share).toBe(true);
+  });
+
+  it('no shares nothing', () => {
+    const s = createProgressStore(memory());
+    s.complete('exp-01', 'low', { estimate: 20 });
+    s.setConsent('no', 'exp-01');
+    s.complete('exp-02', null, {});
+    expect(s.getState().consent).toBe('no');
+    expect(s.getState().completed['exp-01']?.share).toBe(false);
+    expect(s.getState().completed['exp-02']?.share).toBe(false);
+  });
+
+  it('never shares a replay, even after a reset', () => {
+    const s = createProgressStore(memory());
+    s.setConsent('yes');
+    s.complete('exp-01', 'low', { estimate: 20 });
+    s.markSent('exp-01');
+    s.reset();
+    expect(s.getState().consent).toBe('yes');
+    expect(s.getState().played).toEqual(['exp-01']);
+    expect(s.getState().sent).toEqual(['exp-01']);
+    s.complete('exp-01', 'high', { estimate: 60 });
+    expect(s.getState().completed['exp-01']).toMatchObject({ firstPlay: false, share: false });
+  });
+
+  it('a replay before saying yes is still not shared', () => {
+    const s = createProgressStore(memory());
+    s.complete('exp-01', 'low', { estimate: 20 });
+    s.setConsent('yes');
+    s.complete('exp-01', 'low', { estimate: 30 });
+    s.setConsent('yes', 'exp-01');
+    expect(s.getState().completed['exp-01']?.share).toBe(false);
   });
 });

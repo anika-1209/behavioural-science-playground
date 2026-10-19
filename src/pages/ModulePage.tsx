@@ -4,6 +4,7 @@ import { getModule } from '../content/modules';
 import { getExperiment } from '../experiments/registry';
 import { ProgressRail, type Stage } from '../components/ProgressRail';
 import { DebriefView } from '../components/DebriefView';
+import { ConsentPrompt } from '../components/ConsentPrompt';
 import { progress } from '../lib/progress';
 import { useDebrief, useProgress, useTitle } from '../lib/hooks';
 
@@ -21,6 +22,8 @@ export function ModulePage() {
     params.get('view') === 'debrief' && record ? 'debrief' : 'intro',
   );
   const [condition, setCondition] = useState<string | null>(record?.condition ?? null);
+  // Decided on submit, so the prompt stays to show its confirmation once answered.
+  const [askConsent, setAskConsent] = useState(false);
   const { debrief, error } = useDebrief(id, stage === 'debrief' && Boolean(record));
   useTitle(module?.teaserTitle ?? 'Not found');
 
@@ -49,7 +52,11 @@ export function ModulePage() {
             <h1>{module.teaserTitle}</h1>
             <p className="lede">{module.teaserHook}</p>
             <p>{module.introText}</p>
-            <p className="note">Your answers stay in this browser. Nothing is sent anywhere.</p>
+            <p className="note">
+              {state.consent === 'yes'
+                ? 'If this is your first time, your answers are added to the anonymous totals. You can change this in Settings.'
+                : 'Your answers stay in this browser.'}
+            </p>
             <button
               className="btn"
               onClick={() => {
@@ -67,6 +74,7 @@ export function ModulePage() {
             condition={condition}
             extendTime={state.settings.extendTime}
             onComplete={(answers) => {
+              setAskConsent(progress.getState().consent === null);
               progress.complete(module.id, condition, answers);
               go('result');
             }}
@@ -76,6 +84,7 @@ export function ModulePage() {
         {stage === 'result' && record && (
           <div className="stack">
             <Result condition={record.condition} answers={record.answers} />
+            {askConsent && <ConsentPrompt moduleId={module.id} />}
             <button className="btn" onClick={() => go('debrief')}>
               See what happened
             </button>

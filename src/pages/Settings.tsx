@@ -1,10 +1,11 @@
 import { useState } from 'react';
+import { Link } from 'react-router';
 import { progress } from '../lib/progress';
 import { useProgress, useTitle } from '../lib/hooks';
 
 export function Settings() {
   useTitle('Settings');
-  const { settings, completed } = useProgress();
+  const { settings, completed, consent } = useProgress();
   const [confirming, setConfirming] = useState(false);
   const [resetDone, setResetDone] = useState(false);
   const count = Object.keys(completed).length;
@@ -42,10 +43,27 @@ export function Settings() {
         </span>
       </label>
 
+      <label className="toggle">
+        <input
+          type="checkbox"
+          id="set-share"
+          checked={consent === 'yes'}
+          onChange={(e) => progress.setConsent(e.target.checked ? 'yes' : 'no')}
+        />
+        <span>
+          <b>Add my anonymous answers to the totals</b>
+          <span className="note">
+            The first time you finish each experiment from now on, your answers join the "how others answered"
+            numbers. Nothing that identifies you is sent. <Link to="/privacy">What's sent</Link>
+          </span>
+        </span>
+      </label>
+
       <div className="db-block stack">
         <h3>Reset progress</h3>
         <p className="note">
-          Clears your answers and completed experiments in this browser. {count} completed right now.
+          Clears your answers and completed experiments in this browser. {count} completed right now. Experiments
+          you replay after a reset still aren't added to the totals.
         </p>
         {resetDone && <p aria-live="polite">Progress cleared.</p>}
         {confirming ? (

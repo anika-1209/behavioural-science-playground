@@ -4,6 +4,8 @@
 export interface PrimerCard {
   title: string;
   body: string[];
+  /** Optional link shown under the body. */
+  link?: { to: string; label: string };
 }
 
 export const PRIMER_CARDS: PrimerCard[] = [
@@ -39,7 +41,8 @@ export const PRIMER_CARDS: PrimerCard[] = [
     title: 'How the playground works',
     body: [
       "You'll try an experiment first. Answer honestly and quickly, and go with your gut.",
-      "We'll explain what happened afterwards. Your answers stay in this browser and are never sent anywhere.",
+      "We'll explain what happened afterwards. Your answers stay in this browser. After your first experiment, we'll ask whether you'd like to add them, anonymously, to the totals.",
     ],
+    link: { to: '/privacy', label: 'How your answers are handled' },
   },
 ];

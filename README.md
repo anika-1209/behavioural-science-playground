@@ -30,6 +30,8 @@ Stack: Vite, React 19, TypeScript, React Router. No backend; progress lives in t
 | Settings: show bias names, extend time, reset | [src/pages/Settings.tsx](src/pages/Settings.tsx) |
 | Each experiment's rules and result logic (shared with the v1.5 API) | `shared/experiments/<name>/logic.ts` |
 | "How others answered" summaries, per experiment (v1.5) | [shared/summaries.ts](shared/summaries.ts) |
+| Consent to share anonymous answers (v1.5): asked after the first result, changed in Settings | [src/components/ConsentPrompt.tsx](src/components/ConsentPrompt.tsx), `consent`, `played`, `sent` and `share` in [src/lib/progress.ts](src/lib/progress.ts) |
+| Privacy notice | [src/pages/Privacy.tsx](src/pages/Privacy.tsx) (`/privacy`) |
 
 ### How the bias name stays hidden (P3-1)
 
