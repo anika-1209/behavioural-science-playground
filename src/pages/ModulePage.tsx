@@ -5,9 +5,10 @@ import { getExperiment } from '../experiments/registry';
 import { ProgressRail, type Stage } from '../components/ProgressRail';
 import { DebriefView } from '../components/DebriefView';
 import { ConsentPrompt } from '../components/ConsentPrompt';
+import { OthersPanel } from '../components/OthersPanel';
 import { progress } from '../lib/progress';
 import { sharer } from '../lib/share';
-import { useDebrief, useProgress, useTitle } from '../lib/hooks';
+import { useDebrief, useProgress, useStats, useTitle } from '../lib/hooks';
 
 // Feature 3: intro → experiment → result → debrief. The tab title and URL use
 // the teaser title and opaque id only, so neither leaks the bias (P3-1).
@@ -26,6 +27,7 @@ export function ModulePage() {
   // Decided on submit, so the prompt stays to show its confirmation once answered.
   const [askConsent, setAskConsent] = useState(false);
   const { debrief, error } = useDebrief(id, stage === 'debrief' && Boolean(record));
+  const stats = useStats(id, (stage === 'result' || stage === 'debrief') && Boolean(record));
   useTitle(module?.teaserTitle ?? 'Not found');
 
   if (!module || !experiment || module.status !== 'ready') {
@@ -88,6 +90,7 @@ export function ModulePage() {
         {stage === 'result' && record && (
           <div className="stack">
             <Result condition={record.condition} answers={record.answers} />
+            <OthersPanel stats={stats} live={experiment.live} condition={record.condition} />
             {askConsent && <ConsentPrompt moduleId={module.id} />}
             <button className="btn" onClick={() => go('debrief')}>
               See what happened
@@ -104,6 +107,7 @@ export function ModulePage() {
                 moduleId={module.id}
                 debrief={debrief}
                 whatHappened={experiment.whatHappened(record.condition, record.answers)}
+                others={<OthersPanel stats={stats} live={experiment.live} condition={record.condition} />}
                 quizAnswer={record.quiz?.answerId}
                 onQuizAnswer={(answerId, correct) => {
                   progress.recordQuiz(module.id, answerId, correct);

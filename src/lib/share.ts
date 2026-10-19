@@ -8,7 +8,7 @@ import { progress, type ProgressStore } from './progress';
 // and nothing that identifies the browser or links one request to another.
 
 /** Empty means the API is served from the site's own origin, under /api. */
-const API_BASE: string = import.meta.env.VITE_API_BASE ?? '';
+export const API_BASE: string = import.meta.env.VITE_API_BASE ?? '';
 
 /** Matches the API's limit; no real visit gets near it. */
 const MAX_FINISHED_IN_VISIT = 200;

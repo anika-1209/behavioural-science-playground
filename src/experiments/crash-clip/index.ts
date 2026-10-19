@@ -1,9 +1,10 @@
 import type { ExperimentDefinition } from '../types';
 import { Task } from './Task';
 import { Result } from './Result';
+import { live } from './live';
 import { whatHappened } from '../../../shared/experiments/crash-clip/logic';
 
 // exp-08 "Eyewitness": watch a crash clip, then answer questions about it.
-const crashClip: ExperimentDefinition = { Task, Result, whatHappened };
+const crashClip: ExperimentDefinition = { Task, Result, whatHappened, live };
 
 export default crashClip;

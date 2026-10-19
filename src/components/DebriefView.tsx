@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 import { Link } from 'react-router';
 import type { Debrief } from '../content/types';
 import { getModule } from '../content/modules';
@@ -8,6 +8,8 @@ interface Props {
   moduleId: string;
   debrief: Debrief;
   whatHappened: string;
+  /** "How players here answered", shown after "What just happened" when there are live numbers. */
+  others?: ReactNode;
   quizAnswer?: string;
   onQuizAnswer: (answerId: string, correct: boolean) => void;
   /** Called once, when the debrief is shown (the read-through metric's denominator). */
@@ -18,7 +20,7 @@ interface Props {
 
 // The fixed debrief structure from Feature 3. Every bias renders every section
 // in this order; the quiz is the only optional one.
-export function DebriefView({ moduleId, debrief: d, whatHappened, quizAnswer, onQuizAnswer, onOpened, onReadThrough }: Props) {
+export function DebriefView({ moduleId, debrief: d, whatHappened, others, quizAnswer, onQuizAnswer, onOpened, onReadThrough }: Props) {
   const headingRef = useRef<HTMLHeadingElement>(null);
   useEffect(() => headingRef.current?.focus(), []);
   const openedRef = useRef(onOpened);
@@ -54,6 +56,8 @@ export function DebriefView({ moduleId, debrief: d, whatHappened, quizAnswer, on
         <h3>What just happened</h3>
         <p>{whatHappened}</p>
       </section>
+
+      {others}
 
       <section className="db-block">
         <h3>Why it happens</h3>

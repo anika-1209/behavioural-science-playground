@@ -36,6 +36,7 @@ Stack: Vite, React 19, TypeScript, React Router. Progress lives in the browser's
 | Sending answers and usage events, only after a yes | [src/lib/share.ts](src/lib/share.ts) |
 | API requests, content versions and answer checks | [shared/api.ts](shared/api.ts), [shared/validate.ts](shared/validate.ts) |
 | The API and the scheduled summary job | [worker/api.ts](worker/api.ts), schema in [worker/migrations/](worker/migrations/) |
+| "How players here answered" panel on the result and debrief screens, once live | [src/components/OthersPanel.tsx](src/components/OthersPanel.tsx), each experiment's `live.ts` |
 
 ### How the bias name stays hidden (P3-1)
 
@@ -62,7 +63,7 @@ The API tests run the real migrations against Node's built-in SQLite ([worker/te
 Each bias needs three things. `exp-01` is the worked example.
 
 1. **Experiment** in `src/experiments/<name>/`: a `Task` component (calls `onComplete(answers)` once, on submit), a `Result` component for the reveal, and a `whatHappened(condition, answers)` function. None of these may name the bias. Register it in [src/experiments/registry.ts](src/experiments/registry.ts).
-   - Rules, stimuli and result logic go in `shared/experiments/<name>/logic.ts`, with no React or browser code, because the API imports it too. Add the experiment's summary to [shared/summaries.ts](shared/summaries.ts), its answer format to [shared/validate.ts](shared/validate.ts) and its content version to [shared/api.ts](shared/api.ts).
+   - Rules, stimuli and result logic go in `shared/experiments/<name>/logic.ts`, with no React or browser code, because the API imports it too. Add the experiment's summary to [shared/summaries.ts](shared/summaries.ts), its answer format to [shared/validate.ts](shared/validate.ts), its content version to [shared/api.ts](shared/api.ts), and a `live.ts` that turns its summary into labelled bars for the live panel.
 2. **Debrief** in `src/content/debriefs/exp-NN.ts`, typed as `Debrief`. Add its loader line in [src/content/debriefs/index.ts](src/content/debriefs/index.ts).
 3. **Module**: set its entry in [src/content/modules.ts](src/content/modules.ts) to `status: 'ready'`.
 

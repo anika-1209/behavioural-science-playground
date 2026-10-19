@@ -1,5 +1,6 @@
 import type { ComponentType } from 'react';
 import type { Answers } from '../lib/progress';
+import type { ExperimentSummary } from '../../shared/summaries';
 
 export interface TaskProps {
   condition: string | null;
@@ -26,4 +27,25 @@ export interface ExperimentDefinition {
   Result: ComponentType<ResultProps>;
   /** P3-4: must describe the user's actual result, including when they resisted the effect. */
   whatHappened: (condition: string | null, answers: Answers) => string;
+  /** "How players here answered": the live summary as labelled bars, shown once it is live. */
+  live: (summary: ExperimentSummary, condition: string | null) => LiveGroup[];
+}
+
+/** One bar in the live panel. Labels ship before the debrief, so they must not name the bias (P3-1). */
+export interface LiveBar {
+  label: string;
+  value: number | null;
+  /** The value as text, written on the bar. */
+  display: string;
+  /** The value a full-width bar stands for. */
+  max: number;
+  /** The version this player saw. */
+  mine?: boolean;
+  note?: string;
+}
+
+/** Bars that share one scale, under one title. */
+export interface LiveGroup {
+  title: string;
+  bars: LiveBar[];
 }

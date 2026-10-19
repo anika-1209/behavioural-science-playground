@@ -47,7 +47,11 @@ export function Privacy() {
           usage notes from your first experiment wait in the page's memory until you answer: yes sends them along with
           your answers, and no throws them away.
         </p>
-        <p>Everyone sees how others answered, whatever they chose.</p>
+        <p>
+          Everyone sees how others answered, whatever they chose. To show those numbers, your browser asks for the
+          totals for the experiment you just finished. That request says which experiment it is, and nothing about
+          you or your answers.
+        </p>
       </div>
 
       <div className="db-block">
