@@ -29,4 +29,4 @@ simple = { limit = 30, period = 60 }
 # The site's address. The site and API are on different free Cloudflare
 # addresses, so this allows the site's requests (CORS) and rejects POSTs from
 # anywhere else. Replace with your Pages address, e.g. https://bsp.pages.dev
-ALLOWED_ORIGIN = "https://bsp.pages.dev"
+ALLOWED_ORIGIN = "https://bsp-197.pages.dev"
