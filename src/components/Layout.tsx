@@ -1,4 +1,4 @@
-import { NavLink, Outlet } from 'react-router';
+import { Link, NavLink, Outlet } from 'react-router';
 
 export function Layout() {
   return (
@@ -16,6 +16,10 @@ export function Layout() {
       <main id="main">
         <Outlet />
       </main>
+      <footer className="foot">
+        <Link to="/privacy">Privacy</Link>
+        <Link to="/terms">Terms of use</Link>
+      </footer>
     </div>
   );
 }

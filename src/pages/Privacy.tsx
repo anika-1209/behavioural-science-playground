@@ -1,5 +1,6 @@
 import { Link } from 'react-router';
 import { useTitle } from '../lib/hooks';
+import { CONTACT } from '../content/contact';
 
 // Spec "Backend: Privacy and retention": the plain-language notice linked from
 // the primer, Settings and the consent question.
@@ -81,6 +82,13 @@ export function Privacy() {
           anything more being sent.
         </p>
         <p className="note">The site and the totals are hosted on Cloudflare.</p>
+      </div>
+
+      <div className="db-block">
+        <h3>Contact</h3>
+        <p>
+          Questions about your privacy: {CONTACT.name}, <a href={`mailto:${CONTACT.email}`}>{CONTACT.email}</a>
+        </p>
       </div>
     </div>
   );
