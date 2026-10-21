@@ -2,7 +2,7 @@
 
 Learn cognitive biases by experiencing them first: each bias is a short interactive experiment, and the explanation is revealed only afterwards. The full product spec is in [docs/spec.md](docs/spec.md).
 
-**Status:** v1 content complete. The primer, hub, settings and module flow are built. All ten launch biases are playable, `exp-01` to `exp-10`.
+**Status:** v1.5 content complete. All 16 biases are playable: the ten launch biases, `exp-01` to `exp-10`, and six added in v1.5, `exp-11` to `exp-16`. Players who agree can add their anonymous answers to live totals (see "The API").
 
 ## Run it
 

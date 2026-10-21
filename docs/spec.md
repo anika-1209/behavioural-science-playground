@@ -104,7 +104,7 @@ The hub is the home screen: a grid of bias cards that lets users start with whic
 - Categories: *Judgement & estimation*, *Choices & framing*, *Memory & perception*, *Social influence*, *Self & time*.
 - Filter by category; sort by "Recommended for beginners" (default) or alphabetical.
 - A "Surprise me" button picks a random uncompleted bias.
-- Progress indicator: "3 of 10 biases explored".
+- Progress indicator: "3 of 16 biases explored".
 
 **Requirements**
 
@@ -179,7 +179,22 @@ V1 launches with 10 biases spread across the five hub categories, chosen because
 
 Study references are from general knowledge and must be checked against original sources during content review (P3-6).
 
-**Candidates for v2:** endowment effect, loss aversion, gambler's fallacy, planning fallacy, halo effect, hindsight bias, choice overload, default effect.
+### Added in v1.5
+
+Six more biases, built with the same rules: a solo experiment of 2–4 minutes, honest instructions, and the bias name hidden until the debrief.
+
+| Bias | id | Category | Experiment (what the user does) | Debrief hook | Classic study |
+| --- | --- | --- | --- | --- | --- |
+| Gambler's fallacy | exp-11 | Judgement & estimation | Bets on the next toss of a fair coin after six sequences, four ending in a streak; then says which side is more likely after six heads | You bet the streak would end, though each toss is 50/50 | Tversky & Kahneman, 1971 |
+| Loss aversion | exp-12 | Choices & framing | Takes or turns down six 50/50 bets: lose £10, win £10 to £30 | A possible loss weighed more than a bigger possible gain | Tversky & Kahneman, 1992 |
+| Hindsight bias | exp-13 | Memory & perception | Estimates six quantities, sees the real answers, then recalls the estimates | Your memory of your guesses moved toward the answers | Fischhoff & Beyth, 1975 |
+| Default effect | exp-14 | Self & time | Fills in a new-starter form whose choices start at "no" and 0% pension, or "yes" and 5% (randomised) | Most people keep what's pre-selected | Madrian & Shea, 2001 |
+| Endowment effect | exp-15 | Choices & framing | Names the lowest price to sell a mug they were just given, or the most they'd pay for it (randomised) | Owners ask more than buyers offer for the same thing | Kahneman, Knetsch & Thaler, 1990 |
+| Halo effect | exp-16 | Social influence | Rates a note written by Sam, described as warm or as cold (randomised) | One trait coloured your view of unrelated work | Nisbett & Wilson, 1977 |
+
+The loss aversion and endowment effect debriefs say that the size of each effect is debated (Gal & Rucker, 2018; Plott & Zeiler, 2005).
+
+Considered and not built: planning fallacy (it can't happen inside a 4-minute experiment), choice overload (replicates poorly), optimism bias and false consensus effect (left out to keep the set focused; false consensus only works well once live data has built up).
 
 ## Content model
 
@@ -286,6 +301,12 @@ Each summary reuses the experiment's own result logic (`logic.ts`), moved into c
 | exp-08 | Share reporting broken glass, per verb; median speed per verb |
 | exp-09 | Average rounds going with the group; share going along at least once |
 | exp-10 | Share with at least one flip toward the present |
+| exp-11 | Share of bets after a streak that bet on it ending; share saying heads and tails are equally likely |
+| exp-12 | Share accepting each bet |
+| exp-13 | Share whose remembered answers moved toward the real ones more often than not; average questions that did |
+| exp-14 | Share saving into the pension, and share leaving it as set, per version |
+| exp-15 | Median price, per version |
+| exp-16 | Average rating of the note, and share saying the description made no difference, per version |
 
 ### Data quality
 
@@ -323,7 +344,7 @@ Success means users finish experiments, understand the bias, and come back for m
 | Comprehension | Correct answers on the optional quiz | ≥ 70% |
 | Biases per session | Median biases completed per visit | ≥ 2 |
 | Return rate | Users returning within 14 days | Not measured: data stays fully anonymous (see "Backend") |
-| Effect replication | Share of experiments where aggregate data shows the expected effect direction | 10 of 10 biases |
+| Effect replication | Share of experiments where aggregate data shows the expected effect direction | All 16 biases |
 
 ## Open questions and roadmap
 
@@ -338,5 +359,5 @@ Success means users finish experiments, understand the bias, and come back for m
 **Roadmap (proposed)**
 
 1. **v1** — primer, hub, 10 bias modules, local progress.
-2. **v1.5** — anonymous aggregate results shown in debriefs; 8 more biases.
+2. **v1.5** — anonymous aggregate results shown in debriefs; 6 more biases (see "Added in v1.5").
 3. **v2** — "spot the bias" real-world scenario challenges, shareable result cards. Accounts and classroom mode are not planned (see "Open questions").
