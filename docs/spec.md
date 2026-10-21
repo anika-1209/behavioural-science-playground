@@ -310,7 +310,7 @@ Each summary reuses the experiment's own result logic (`logic.ts`), moved into c
 
 ### Out of scope for v1.5
 
-Accounts, return-rate tracking, classroom mode and live updates. These would need IDs or real-time connections and belong to v2.
+Accounts, return-rate tracking, classroom mode and live updates. These would need IDs or real-time connections. Accounts and classroom mode are not planned for any version (see "Open questions").
 
 ## Success metrics
 
@@ -329,14 +329,14 @@ Success means users finish experiments, understand the bias, and come back for m
 
 **Open questions**
 
-- [ ] Platform: responsive web app only, or also native mobile?
+- [x] Platform: responsive web app only, or also native mobile? **Web only** (decided 2026-10-21).
 - [x] Should aggregate "how others answered" data come from live users, published studies, or both at launch? **Both** (see "Backend").
-- [ ] Who reviews debrief content for scientific accuracy, and how often?
-- [ ] Is an educator/classroom mode (shared session, live group results) in scope for v1 or v2?
-- [ ] Target languages beyond English?
+- [ ] Who reviews debrief content for scientific accuracy, and how often? A review pack lists every claim to check (P3-6); the reviewer is still to be found.
+- [x] Is an educator/classroom mode (shared session, live group results) in scope for v1 or v2? **Neither for now** (decided 2026-10-21). Classroom mode and user accounts would raise privacy and data-protection questions the app currently avoids by storing nothing that identifies anyone.
+- [x] Target languages beyond English? **English only** (decided 2026-10-21).
 
 **Roadmap (proposed)**
 
 1. **v1** — primer, hub, 10 bias modules, local progress.
 2. **v1.5** — anonymous aggregate results shown in debriefs; 8 more biases.
-3. **v2** — optional accounts, classroom mode, "spot the bias" real-world scenario challenges, shareable result cards.
+3. **v2** — "spot the bias" real-world scenario challenges, shareable result cards. Accounts and classroom mode are not planned (see "Open questions").
