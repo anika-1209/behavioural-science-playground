@@ -147,6 +147,21 @@ describe('summarise', () => {
     expect(s.out!.values).toEqual({ joinedShare: 50, keptShare: 50 });
     expect(s.in!.values).toEqual({ joinedShare: 100, keptShare: 100 });
   });
+
+  it('exp-15: median price per version', () => {
+    const s = summarise('exp-15', [...plays('owner', { price: 5 }, { price: 9 }), ...plays('buyer', { price: 2.5 })])!;
+    expect(s.owner!.values).toEqual({ medianPrice: 7 });
+    expect(s.buyer!.values).toEqual({ medianPrice: 2.5 });
+  });
+
+  it('exp-16: average note rating and share saying no influence, per version', () => {
+    const s = summarise('exp-16', [
+      ...plays('warm', { clarity: 6, organised: 5, smart: 6, influence: 'none' }, { clarity: 7, organised: 7, smart: 5, influence: 'little' }),
+      ...plays('cold', { clarity: 4, organised: 4, smart: 3, influence: 'none' }),
+    ])!;
+    expect(s.warm!.values).toEqual({ meanWriting: 6.3, noneShare: 50 });
+    expect(s.cold!.values).toEqual({ meanWriting: 4, noneShare: 100 });
+  });
 });
 
 describe('isLive', () => {

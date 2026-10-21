@@ -208,6 +208,34 @@ export const MODULES: BiasModule[] = [
     relatedBiasIds: ['exp-10'],
     status: 'ready',
   },
+  {
+    id: 'exp-15',
+    teaserTitle: "What's it worth?",
+    teaserHook: 'Put a price on a mug.',
+    category: 'choices',
+    estMinutes: 2,
+    experimentType: 'estimate',
+    conditions: ['owner', 'buyer'],
+    introText: "You'll read about a mug and name a price for it. There's no right answer. " + NEUTRAL_INTRO,
+    beginnerRank: 15,
+    relatedBiasIds: ['exp-12'],
+    status: 'ready',
+  },
+  {
+    id: 'exp-16',
+    teaserTitle: 'First impressions',
+    teaserHook: 'Size up a stranger.',
+    category: 'social',
+    estMinutes: 3,
+    experimentType: 'choice',
+    conditions: ['warm', 'cold'],
+    introText:
+      "You'll read a short description of someone and a note they wrote, then answer four quick questions. There's no right answer. " +
+      NEUTRAL_INTRO,
+    beginnerRank: 16,
+    relatedBiasIds: ['exp-09'],
+    status: 'ready',
+  },
 ];
 
 export const getModule = (id: string) => MODULES.find((m) => m.id === id);

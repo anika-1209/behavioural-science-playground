@@ -38,6 +38,10 @@ const VALID: [string, string, Answers][] = [
   ['exp-13', 'all', recalls],
   ['exp-14', 'out', { pension: '0', newsletter: 'no', birthday: 'no' }],
   ['exp-14', 'in', { pension: '5', newsletter: 'yes', birthday: 'no' }],
+  ['exp-15', 'owner', { price: 7.5 }],
+  ['exp-15', 'buyer', { price: 3 }],
+  ['exp-16', 'warm', { clarity: 6, organised: 5, smart: 6, influence: 'none' }],
+  ['exp-16', 'cold', { clarity: 3, organised: 4, smart: 4, influence: 'little' }],
 ];
 
 const req = (experimentId: string, version: string, answers: Answers, extra = {}) => ({
@@ -94,6 +98,9 @@ describe('parseAnswerRequest', () => {
       ['exp-12', 'all', { ...Object.fromEntries(WINS.map((w) => [betKey(w), 'accept'])), w15: 'yes' }],
       ['exp-13', 'all', { ...recalls, q1_recall: -5 }],
       ['exp-14', 'in', { pension: '4', newsletter: 'yes', birthday: 'no' }],
+      ['exp-15', 'owner', { price: 101 }],
+      ['exp-15', 'owner', { price: 4.555 }],
+      ['exp-16', 'warm', { clarity: 8, organised: 5, smart: 6, influence: 'none' }],
     ];
     for (const [id, v, a] of bad) expect(parseAnswerRequest(req(id, v, a)), `${id} ${JSON.stringify(a)}`).toBeNull();
   });

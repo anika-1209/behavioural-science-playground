@@ -10,6 +10,8 @@ import { ROUNDS as FLIPS, BELIEFS } from './experiments/next-flip/logic';
 import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
 import { QUESTIONS as RECALLS } from './experiments/before-after/logic';
 import { PENSION } from './experiments/first-day/logic';
+import { MAX_PRICE } from './experiments/mug-price/logic';
+import { INFLUENCE, SCALE } from './experiments/first-impressions/logic';
 
 // Spec "Data quality": answers must match the experiment's fixed format
 // exactly, or the API rejects them. Each rule mirrors what the Task submits.
@@ -29,6 +31,10 @@ const wholeNumber =
 
 /** The range quiz accepts any non-negative number, decimals included (see parseNumber). */
 const rangeNumber: Check = (v) => typeof v === 'number' && Number.isFinite(v) && v >= 0 && v <= 1e12;
+
+/** Pounds and pence up to the mug experiment's limit (see parsePrice). */
+const pounds: Check = (v) =>
+  typeof v === 'number' && v >= 0 && v <= MAX_PRICE && Math.abs(Math.round(v * 100) - v * 100) < 1e-6;
 
 const pattern =
   (re: RegExp): Check =>
@@ -76,6 +82,13 @@ const SHAPES: Record<string, (version: string) => Shape> = {
   'exp-13': () =>
     Object.fromEntries(RECALLS.flatMap((q) => [[`${q.id}_first`, rangeNumber], [`${q.id}_recall`, rangeNumber]])),
   'exp-14': () => ({ pension: oneOf(...PENSION), newsletter: oneOf('yes', 'no'), birthday: oneOf('yes', 'no') }),
+  'exp-15': () => ({ price: pounds }),
+  'exp-16': () => ({
+    clarity: oneOf(...SCALE),
+    organised: oneOf(...SCALE),
+    smart: oneOf(...SCALE),
+    influence: oneOf(...INFLUENCE.map((i) => i.id)),
+  }),
 };
 
 /** Extra rules that span more than one answer. */

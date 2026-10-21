@@ -13,6 +13,8 @@ import nextFlip from './next-flip';
 import coinBets from './coin-bets';
 import beforeAfter from './before-after';
 import firstDay from './first-day';
+import mugPrice from './mug-price';
+import firstImpressions from './first-impressions';
 
 // Module id → experiment. Add one line per built module.
 export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
@@ -30,6 +32,8 @@ export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
   'exp-12': coinBets,
   'exp-13': beforeAfter,
   'exp-14': firstDay,
+  'exp-15': mugPrice,
+  'exp-16': firstImpressions,
 };
 
 export const getExperiment = (id: string): ExperimentDefinition | undefined => EXPERIMENTS[id];

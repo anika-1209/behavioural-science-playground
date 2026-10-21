@@ -13,6 +13,7 @@ import * as flip from './experiments/next-flip/logic';
 import * as bets from './experiments/coin-bets/logic';
 import * as recall from './experiments/before-after/logic';
 import * as form from './experiments/first-day/logic';
+import * as impressions from './experiments/first-impressions/logic';
 
 // "How others answered": one summary per experiment version, built from the
 // experiment's own result logic so the app and the API apply the same rules
@@ -158,6 +159,19 @@ export const SUMMARIES: Record<string, SummaryDef> = {
     summarise: (plays, v) => ({
       joinedShare: share(plays, form.joined),
       keptShare: share(plays, (a) => form.wasPulled(v, a)),
+    }),
+  },
+  // Median price, per version.
+  'exp-15': {
+    versions: ['owner', 'buyer'],
+    summarise: (plays) => ({ medianPrice: median(numbers(plays, 'price')) }),
+  },
+  // Average rating of the note; share saying the description made no difference; per version.
+  'exp-16': {
+    versions: ['warm', 'cold'],
+    summarise: (plays) => ({
+      meanWriting: mean(plays.map(impressions.writingScore)),
+      noneShare: share(plays, (a) => impressions.influenceOf(a) === 'none'),
     }),
   },
 };
