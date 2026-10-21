@@ -11,6 +11,8 @@ import * as line from './experiments/line-judge/logic';
 import * as later from './experiments/now-later/logic';
 import * as flip from './experiments/next-flip/logic';
 import * as bets from './experiments/coin-bets/logic';
+import * as recall from './experiments/before-after/logic';
+import * as form from './experiments/first-day/logic';
 
 // "How others answered": one summary per experiment version, built from the
 // experiment's own result logic so the app and the API apply the same rules
@@ -141,6 +143,22 @@ export const SUMMARIES: Record<string, SummaryDef> = {
   'exp-12': {
     versions: NONE,
     summarise: (plays) => Object.fromEntries(bets.WINS.map((w) => [bets.keyOf(w), share(plays, (a) => bets.accepted(a, w))])),
+  },
+  // Share whose memories drifted toward the real answers; average questions drifting that way.
+  'exp-13': {
+    versions: NONE,
+    summarise: (plays) => ({
+      towardShare: share(plays, recall.wasPulled),
+      meanToward: mean(plays.map((a) => recall.count(a, 'toward'))),
+    }),
+  },
+  // Share saving into the pension, and share leaving it as set, per version.
+  'exp-14': {
+    versions: ['out', 'in'],
+    summarise: (plays, v) => ({
+      joinedShare: share(plays, form.joined),
+      keptShare: share(plays, (a) => form.wasPulled(v, a)),
+    }),
   },
 };
 

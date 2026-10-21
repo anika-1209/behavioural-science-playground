@@ -11,6 +11,8 @@ import lineJudge from './line-judge';
 import nowLater from './now-later';
 import nextFlip from './next-flip';
 import coinBets from './coin-bets';
+import beforeAfter from './before-after';
+import firstDay from './first-day';
 
 // Module id → experiment. Add one line per built module.
 export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
@@ -26,6 +28,8 @@ export const EXPERIMENTS: Record<string, ExperimentDefinition> = {
   'exp-10': nowLater,
   'exp-11': nextFlip,
   'exp-12': coinBets,
+  'exp-13': beforeAfter,
+  'exp-14': firstDay,
 };
 
 export const getExperiment = (id: string): ExperimentDefinition | undefined => EXPERIMENTS[id];

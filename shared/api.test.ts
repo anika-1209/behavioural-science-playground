@@ -8,6 +8,10 @@ import { ROUNDS } from './experiments/line-judge/logic';
 import { ORDER, keyOf } from './experiments/now-later/logic';
 import { ROUNDS as FLIPS } from './experiments/next-flip/logic';
 import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
+import { QUESTIONS as RECALLS } from './experiments/before-after/logic';
+
+const recalls: Answers = {};
+for (const q of RECALLS) Object.assign(recalls, { [`${q.id}_first`]: 500, [`${q.id}_recall`]: 450.5 });
 
 const ranges: Answers = {};
 for (const q of QUESTIONS) Object.assign(ranges, { [`${q.id}_lo`]: 1, [`${q.id}_hi`]: 1e6 });
@@ -31,6 +35,9 @@ const VALID: [string, string, Answers][] = [
   ['exp-10', 'all', now],
   ['exp-11', 'all', { ...Object.fromEntries(FLIPS.map((r) => [r.id, 'T'])), belief: 'equal' }],
   ['exp-12', 'all', Object.fromEntries(WINS.map((w) => [betKey(w), w >= 20 ? 'accept' : 'reject']))],
+  ['exp-13', 'all', recalls],
+  ['exp-14', 'out', { pension: '0', newsletter: 'no', birthday: 'no' }],
+  ['exp-14', 'in', { pension: '5', newsletter: 'yes', birthday: 'no' }],
 ];
 
 const req = (experimentId: string, version: string, answers: Answers, extra = {}) => ({
@@ -85,6 +92,8 @@ describe('parseAnswerRequest', () => {
       ['exp-10', 'all', { ...now, [keyOf('near', 101)]: 'maybe' }],
       ['exp-11', 'all', { ...Object.fromEntries(FLIPS.map((r) => [r.id, 'T'])), belief: 'probably' }],
       ['exp-12', 'all', { ...Object.fromEntries(WINS.map((w) => [betKey(w), 'accept'])), w15: 'yes' }],
+      ['exp-13', 'all', { ...recalls, q1_recall: -5 }],
+      ['exp-14', 'in', { pension: '4', newsletter: 'yes', birthday: 'no' }],
     ];
     for (const [id, v, a] of bad) expect(parseAnswerRequest(req(id, v, a)), `${id} ${JSON.stringify(a)}`).toBeNull();
   });

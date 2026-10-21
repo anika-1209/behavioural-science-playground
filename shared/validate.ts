@@ -8,6 +8,8 @@ import { ROUNDS } from './experiments/line-judge/logic';
 import { ORDER, keyOf } from './experiments/now-later/logic';
 import { ROUNDS as FLIPS, BELIEFS } from './experiments/next-flip/logic';
 import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
+import { QUESTIONS as RECALLS } from './experiments/before-after/logic';
+import { PENSION } from './experiments/first-day/logic';
 
 // Spec "Data quality": answers must match the experiment's fixed format
 // exactly, or the API rejects them. Each rule mirrors what the Task submits.
@@ -71,6 +73,9 @@ const SHAPES: Record<string, (version: string) => Shape> = {
     belief: oneOf(...BELIEFS.map((b) => b.id)),
   }),
   'exp-12': () => Object.fromEntries(WINS.map((w) => [betKey(w), oneOf('accept', 'reject')])),
+  'exp-13': () =>
+    Object.fromEntries(RECALLS.flatMap((q) => [[`${q.id}_first`, rangeNumber], [`${q.id}_recall`, rangeNumber]])),
+  'exp-14': () => ({ pension: oneOf(...PENSION), newsletter: oneOf('yes', 'no'), birthday: oneOf('yes', 'no') }),
 };
 
 /** Extra rules that span more than one answer. */

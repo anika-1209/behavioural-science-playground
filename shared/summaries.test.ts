@@ -6,6 +6,7 @@ import { ROUNDS } from './experiments/line-judge/logic';
 import { LATER, keyOf } from './experiments/now-later/logic';
 import { ROUNDS as FLIPS, streakOf } from './experiments/next-flip/logic';
 import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
+import { QUESTIONS as RECALLS } from './experiments/before-after/logic';
 
 const plays = (condition: string | null, ...answers: Answers[]): Play[] => answers.map((a) => ({ condition, answers: a }));
 
@@ -126,6 +127,25 @@ describe('summarise', () => {
     const bold = Object.fromEntries(WINS.map((w) => [betKey(w), 'accept']));
     const wary = Object.fromEntries(WINS.map((w) => [betKey(w), w >= 20 ? 'accept' : 'reject']));
     expect(summarise('exp-12', plays(null, bold, wary))!.all!.values).toEqual({ w10: 50, w12: 50, w15: 50, w20: 100, w25: 100, w30: 100 });
+  });
+
+  it('exp-13: share whose memories drifted toward the answers, and average questions that did', () => {
+    const drifted: Answers = {};
+    const exact: Answers = {};
+    for (const q of RECALLS) {
+      Object.assign(drifted, { [`${q.id}_first`]: q.answer * 2, [`${q.id}_recall`]: q.answer * 1.5 });
+      Object.assign(exact, { [`${q.id}_first`]: q.answer * 2, [`${q.id}_recall`]: q.answer * 2 });
+    }
+    expect(summarise('exp-13', plays(null, drifted, exact))!.all!.values).toEqual({ towardShare: 50, meanToward: 3 });
+  });
+
+  it('exp-14: share saving and share leaving the pension as set, per version', () => {
+    const s = summarise('exp-14', [
+      ...plays('out', { pension: '0', newsletter: 'no', birthday: 'no' }, { pension: '3', newsletter: 'no', birthday: 'no' }),
+      ...plays('in', { pension: '5', newsletter: 'yes', birthday: 'yes' }),
+    ])!;
+    expect(s.out!.values).toEqual({ joinedShare: 50, keptShare: 50 });
+    expect(s.in!.values).toEqual({ joinedShare: 100, keptShare: 100 });
   });
 });
 

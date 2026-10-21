@@ -16,6 +16,8 @@ const LOADERS: Record<string, () => Promise<{ default: Debrief }>> = {
   'exp-10': () => import('./exp-10'),
   'exp-11': () => import('./exp-11'),
   'exp-12': () => import('./exp-12'),
+  'exp-13': () => import('./exp-13'),
+  'exp-14': () => import('./exp-14'),
 };
 
 export const hasDebrief = (id: string) => id in LOADERS;
