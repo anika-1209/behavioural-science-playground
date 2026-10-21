@@ -147,6 +147,16 @@ describe('CORS', () => {
     expect(pre.status).toBe(204);
   });
 
+  it('allows each of several comma-separated origins', async () => {
+    const { call, post } = setup({ ALLOWED_ORIGIN: 'https://new.example, https://old.example' });
+    for (const origin of ['https://new.example', 'https://old.example']) {
+      const res = await call('/api/stats/exp-01', { headers: { Origin: origin } });
+      expect(res.headers.get('Access-Control-Allow-Origin')).toBe(origin);
+      expect((await post('/api/answers', answer('sure'), { Origin: origin })).status).toBe(204);
+    }
+    expect((await post('/api/answers', answer('sure'), { Origin: 'https://new.example.evil' })).status).toBe(403);
+  });
+
   it('sends no CORS headers when the API shares the site origin', async () => {
     const { call } = setup();
     const res = await call('/api/stats/exp-01', { headers: { Origin: 'https://play.example' } });

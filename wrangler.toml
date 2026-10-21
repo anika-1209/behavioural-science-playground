@@ -11,7 +11,7 @@ crons = ["*/15 * * * *"]
 [[d1_databases]]
 binding = "DB"
 database_name = "bsp"
-database_id = "226c3fe1-aee1-4433-85d1-0768d3b420ad" # replace with the id from `wrangler d1 create bsp`
+database_id = "226c3fe1-aee1-4433-85d1-0768d3b420ad" # from `wrangler d1 create bsp`
 migrations_dir = "worker/migrations"
 
 # Turn off request logging so IP addresses aren't kept (spec, "What is sent").
@@ -26,7 +26,7 @@ namespace_id = "1001"
 simple = { limit = 30, period = 60 }
 
 [vars]
-# The site's address. The site and API are on different free Cloudflare
-# addresses, so this allows the site's requests (CORS) and rejects POSTs from
-# anywhere else. Replace with your Pages address, e.g. https://bsp.pages.dev
-ALLOWED_ORIGIN = "https://bsp-197.pages.dev"
+# The site's addresses, comma-separated. The site and API are on different
+# free Cloudflare addresses, so this allows the site's requests (CORS) and
+# rejects POSTs from anywhere else. Use your Pages address, e.g. https://bsp.pages.dev
+ALLOWED_ORIGIN = "https://besci-playground.pages.dev,https://bsp-197.pages.dev"

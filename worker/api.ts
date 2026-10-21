@@ -10,8 +10,9 @@ import { SUMMARIES, isLive, summarise, type ExperimentSummary, type Play } from 
 export interface Env {
   DB: D1Database;
   /**
-   * The site's origin, since the API is served from a different domain. When
-   * set, POSTs must come from it: a basic filter against scripted submissions.
+   * The site's origins, comma-separated, since the API is served from a
+   * different domain. When set, POSTs must come from one of them: a basic
+   * filter against scripted submissions.
    */
   ALLOWED_ORIGIN?: string;
   /** Cloudflare's rate limiter for POSTs (wrangler.toml). Optional so tests and local runs can skip it. */
@@ -34,6 +35,13 @@ const json = (body: unknown, init: ResponseInit = {}) =>
 
 const error = (status: number, message: string) => json({ error: message }, { status });
 
+/** Whether the request comes from one of the site's origins. Always true when none are configured. */
+function fromSite(req: Request, env: Env): boolean {
+  if (!env.ALLOWED_ORIGIN) return true;
+  const origin = req.headers.get('Origin');
+  return origin !== null && env.ALLOWED_ORIGIN.split(',').some((o) => o.trim() === origin);
+}
+
 /** Reads a small JSON body. Returns undefined if it is too big, not JSON, or not sent as JSON. */
 async function readJson(req: Request): Promise<unknown> {
   if (!req.headers.get('Content-Type')?.startsWith('application/json')) return undefined;
@@ -49,7 +57,7 @@ async function readJson(req: Request): Promise<unknown> {
 
 function corsHeaders(req: Request, env: Env): Record<string, string> {
   const origin = req.headers.get('Origin');
-  if (!env.ALLOWED_ORIGIN || origin !== env.ALLOWED_ORIGIN) return {};
+  if (!env.ALLOWED_ORIGIN || !origin || !fromSite(req, env)) return {};
   return {
     'Access-Control-Allow-Origin': origin,
     'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
@@ -69,7 +77,7 @@ export async function handle(req: Request, env: Env, now = new Date()): Promise<
 
 /** Origin check and rate limit for POSTs. Returns an error response, or null to carry on. */
 async function guardPost(req: Request, env: Env): Promise<Response | null> {
-  if (env.ALLOWED_ORIGIN && req.headers.get('Origin') !== env.ALLOWED_ORIGIN) return error(403, 'Wrong origin.');
+  if (!fromSite(req, env)) return error(403, 'Wrong origin.');
   if (env.LIMITER) {
     const { success } = await env.LIMITER.limit({ key: req.headers.get('CF-Connecting-IP') ?? 'unknown' });
     if (!success) return error(429, 'Too many requests. Try again in a minute.');

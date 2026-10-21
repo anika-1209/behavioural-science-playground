@@ -32,7 +32,7 @@ You need a Cloudflare account. All commands run from the repository root.
 
 3. **Choose the site's address.** The Pages project name becomes the address: a project called `bsp` is served at `https://bsp.pages.dev`. Check the name is free by starting to create the project in step 5. If it's taken, Cloudflare suggests another.
 
-   Put the address in `ALLOWED_ORIGIN` in [wrangler.toml](../wrangler.toml), replacing `https://REPLACE-ME.pages.dev`. Use no trailing slash.
+   Put the address in `ALLOWED_ORIGIN` in [wrangler.toml](../wrangler.toml), replacing `https://REPLACE-ME.pages.dev`. Use no trailing slash. To accept answers from more than one address, for example while moving to a new one, separate them with commas.
 
 4. **Deploy the API.**
 
@@ -78,14 +78,14 @@ If nothing arrives, open the browser's developer tools and look at the Network t
 
 | What you see | Cause |
 | --- | --- |
-| A 403 on `/api/answers` | `ALLOWED_ORIGIN` doesn't exactly match the site's address. |
+| A 403 on `/api/answers` | No address in `ALLOWED_ORIGIN` exactly matches the site's address. |
 | A CORS error | Same cause as a 403. |
 | Requests going to the site's own `/api/...` | `VITE_API_BASE` wasn't set when the site was built. Set it and redeploy. |
 
 ## After that
 
 - **Site changes** deploy automatically when you push to `main`.
-- **Pull request previews.** Pages builds previews at addresses like `<hash>.bsp.pages.dev`. Those addresses aren't `ALLOWED_ORIGIN`, so sharing answers doesn't work in previews. That's deliberate, so test plays never reach the totals.
+- **Pull request previews.** Pages builds previews at addresses like `<hash>.bsp.pages.dev`. Those addresses aren't in `ALLOWED_ORIGIN`, so sharing answers doesn't work in previews. That's deliberate, so test plays never reach the totals.
 - **API changes,** including new files in [worker/migrations/](../worker/migrations/), deploy with `npm run deploy:api`. It applies any new migrations first.
 - **Changing an experiment's questions, options or study figures:** bump its number in `CONTENT_VERSION` ([shared/api.ts](../shared/api.ts)), then deploy both the site and the API. The API then counts that experiment from zero.
 - **Tests** run on every push via GitHub Actions ([.github/workflows/ci.yml](../.github/workflows/ci.yml)). The workflow checks that the Worker bundles but doesn't deploy it.
@@ -95,7 +95,7 @@ If nothing arrives, open the browser's developer tools and look at the Network t
 The free addresses don't offer Cloudflare's dashboard firewall or bot rules, so the Worker protects itself:
 
 - **Format checks.** Each answer must match exactly what that experiment's screen submits. Requests must be JSON and under 4 KB.
-- **Origin check.** Answers and events must come from `ALLOWED_ORIGIN`. This stops casual misuse from other websites, but not someone scripting requests directly.
+- **Origin check.** Answers and events must come from an address in `ALLOWED_ORIGIN`. This stops casual misuse from other websites, but not someone scripting requests directly.
 - **Rate limit.** At most 30 answers and events a minute from each IP address. Cloudflare counts this in memory only. The IP is never stored in the database or logged: request logging is off in [wrangler.toml](../wrangler.toml).
 
 Someone determined could still send fake answers within those limits. If that becomes a problem, the next steps are Cloudflare Turnstile, or moving to a domain of your own and using Cloudflare's bot rules.
