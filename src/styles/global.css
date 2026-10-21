@@ -524,3 +524,31 @@ h3 { font-family: var(--font-display); font-weight: 600; font-size: 19px; margin
   .others-bars li { grid-template-columns: 1fr auto; }
   .ob-track { grid-column: 1 / -1; grid-row: 2; }
 }
+
+/* Experiment: next flip (exp-11) */
+.coins { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.coin {
+  width: 34px; height: 34px; border-radius: 50%; display: grid; place-items: center;
+  font: 600 15px var(--font-num); border: 2px solid var(--line);
+}
+.coin.h { background: var(--butter); }
+.coin.t { background: var(--sky); }
+.choice3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.choice3 .btn { justify-self: stretch; padding-block: 16px; }
+.flips { width: 100%; border-collapse: collapse; font-size: 15px; }
+.flips th, .flips td { text-align: left; padding: 8px; border-bottom: 1px solid var(--line); vertical-align: middle; }
+.flips th { font-size: 12.5px; text-transform: uppercase; letter-spacing: .07em; color: var(--muted); }
+.flips .coins { flex-wrap: nowrap; gap: 3px; }
+.flips .coin { width: 22px; height: 22px; font-size: 11px; border-width: 1.5px; }
+.flips .bet-word { text-transform: capitalize; }
+@media (max-width: 420px) { .choice3 { grid-template-columns: 1fr; } }
+
+/* Experiment: coin toss bets (exp-12) */
+.bet { display: grid; gap: 10px; }
+.bet-sides { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.bet-side { display: grid; gap: 4px; border: 2px solid var(--line); border-radius: 12px; padding: 16px; }
+.bet-side.win { background: var(--mint); }
+.bet-side.lose { background: var(--pink); }
+.bet-side .when { font: 600 17px var(--font-display); }
+.bet-side .amt { font: 500 34px/1 var(--font-num); }
+.ledger tr.typical td { background: var(--butter); }

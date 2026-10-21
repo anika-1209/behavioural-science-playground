@@ -9,6 +9,8 @@ import * as rule from './experiments/rule-finder/logic';
 import * as crash from './experiments/crash-clip/logic';
 import * as line from './experiments/line-judge/logic';
 import * as later from './experiments/now-later/logic';
+import * as flip from './experiments/next-flip/logic';
+import * as bets from './experiments/coin-bets/logic';
 
 // "How others answered": one summary per experiment version, built from the
 // experiment's own result logic so the app and the API apply the same rules
@@ -124,6 +126,21 @@ export const SUMMARIES: Record<string, SummaryDef> = {
   'exp-10': {
     versions: NONE,
     summarise: (plays) => ({ flipShare: share(plays, later.wasPulled) }),
+  },
+  // Share of streak bets against the streak; share saying both sides are equally likely.
+  'exp-11': {
+    versions: NONE,
+    summarise: (plays) => ({
+      againstShare: plays.length
+        ? round1((100 * plays.reduce((n, a) => n + flip.againstStreak(a), 0)) / (plays.length * flip.STREAK_ROUNDS.length))
+        : null,
+      equalShare: share(plays, (a) => flip.beliefOf(a) === 'equal'),
+    }),
+  },
+  // Share accepting each bet.
+  'exp-12': {
+    versions: NONE,
+    summarise: (plays) => Object.fromEntries(bets.WINS.map((w) => [bets.keyOf(w), share(plays, (a) => bets.accepted(a, w))])),
   },
 };
 

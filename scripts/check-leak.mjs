@@ -7,7 +7,7 @@ import { join } from 'node:path';
 const debriefDir = 'src/content/debriefs';
 const names = readdirSync(debriefDir)
   .filter((f) => /^exp-\d+\.ts$/.test(f))
-  .map((f) => readFileSync(join(debriefDir, f), 'utf8').match(/biasName:\s*['"]([^'"]+)['"]/)?.[1])
+  .map((f) => readFileSync(join(debriefDir, f), 'utf8').match(/biasName:\s*(['"])(.+?)\1/)?.[2])
   .filter(Boolean);
 
 const html = readFileSync('dist/index.html', 'utf8');

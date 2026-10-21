@@ -6,6 +6,8 @@ import { QUESTIONS } from './experiments/range-quiz/logic';
 import { PAIRS } from './experiments/risk-pairs/logic';
 import { ROUNDS } from './experiments/line-judge/logic';
 import { ORDER, keyOf } from './experiments/now-later/logic';
+import { ROUNDS as FLIPS } from './experiments/next-flip/logic';
+import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
 
 const ranges: Answers = {};
 for (const q of QUESTIONS) Object.assign(ranges, { [`${q.id}_lo`]: 1, [`${q.id}_hi`]: 1e6 });
@@ -27,6 +29,8 @@ const VALID: [string, string, Answers][] = [
   ['exp-08', 'hit', { colour: 'blue', speed: 0, light: 'yes', glass: 'no' }],
   ['exp-09', 'all', { picks: ROUNDS.map((r) => r.group).join('') }],
   ['exp-10', 'all', now],
+  ['exp-11', 'all', { ...Object.fromEntries(FLIPS.map((r) => [r.id, 'T'])), belief: 'equal' }],
+  ['exp-12', 'all', Object.fromEntries(WINS.map((w) => [betKey(w), w >= 20 ? 'accept' : 'reject']))],
 ];
 
 const req = (experimentId: string, version: string, answers: Answers, extra = {}) => ({
@@ -79,6 +83,8 @@ describe('parseAnswerRequest', () => {
       ['exp-08', 'hit', { colour: 'red', speed: 30.5, light: 'no', glass: 'no' }],
       ['exp-09', 'all', { picks: 'ABC' }],
       ['exp-10', 'all', { ...now, [keyOf('near', 101)]: 'maybe' }],
+      ['exp-11', 'all', { ...Object.fromEntries(FLIPS.map((r) => [r.id, 'T'])), belief: 'probably' }],
+      ['exp-12', 'all', { ...Object.fromEntries(WINS.map((w) => [betKey(w), 'accept'])), w15: 'yes' }],
     ];
     for (const [id, v, a] of bad) expect(parseAnswerRequest(req(id, v, a)), `${id} ${JSON.stringify(a)}`).toBeNull();
   });

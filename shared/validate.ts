@@ -6,6 +6,8 @@ import { MAX_TESTS, RULES } from './experiments/rule-finder/logic';
 import { COLOURS } from './experiments/crash-clip/logic';
 import { ROUNDS } from './experiments/line-judge/logic';
 import { ORDER, keyOf } from './experiments/now-later/logic';
+import { ROUNDS as FLIPS, BELIEFS } from './experiments/next-flip/logic';
+import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
 
 // Spec "Data quality": answers must match the experiment's fixed format
 // exactly, or the API rejects them. Each rule mirrors what the Task submits.
@@ -64,6 +66,11 @@ const SHAPES: Record<string, (version: string) => Shape> = {
   }),
   'exp-09': () => ({ picks: pattern(new RegExp(`^[ABC]{${ROUNDS.length}}$`)) }),
   'exp-10': () => Object.fromEntries(ORDER.map(([h, a]) => [keyOf(h, a), oneOf('soon', 'late')])),
+  'exp-11': () => ({
+    ...Object.fromEntries(FLIPS.map((r) => [r.id, oneOf('H', 'T')])),
+    belief: oneOf(...BELIEFS.map((b) => b.id)),
+  }),
+  'exp-12': () => Object.fromEntries(WINS.map((w) => [betKey(w), oneOf('accept', 'reject')])),
 };
 
 /** Extra rules that span more than one answer. */

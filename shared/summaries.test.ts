@@ -4,6 +4,8 @@ import { LIVE_MIN, isLive, mean, median, share, summarise, type Play } from './s
 import { QUESTIONS } from './experiments/range-quiz/logic';
 import { ROUNDS } from './experiments/line-judge/logic';
 import { LATER, keyOf } from './experiments/now-later/logic';
+import { ROUNDS as FLIPS, streakOf } from './experiments/next-flip/logic';
+import { WINS, keyOf as betKey } from './experiments/coin-bets/logic';
 
 const plays = (condition: string | null, ...answers: Answers[]): Play[] => answers.map((a) => ({ condition, answers: a }));
 
@@ -110,6 +112,20 @@ describe('summarise', () => {
     const flip: Answers = { [keyOf('near', LATER[0]!)]: 'soon', [keyOf('far', LATER[0]!)]: 'late' };
     const steady: Answers = {};
     expect(summarise('exp-10', plays(null, flip, steady, steady, steady))!.all!.values).toEqual({ flipShare: 25 });
+  });
+
+  it('exp-11: share of streak bets against the streak, and share saying equally likely', () => {
+    const against: Answers = { belief: 'equal' };
+    for (const r of FLIPS) against[r.id] = streakOf(r) === 'H' ? 'T' : 'H';
+    const allHeads: Answers = { belief: 'tails', ...Object.fromEntries(FLIPS.map((r) => [r.id, 'H'])) };
+    // allHeads bets against the one tails streak only: 5 of 8 streak bets are against.
+    expect(summarise('exp-11', plays(null, against, allHeads))!.all!.values).toEqual({ againstShare: 62.5, equalShare: 50 });
+  });
+
+  it('exp-12: share accepting each bet', () => {
+    const bold = Object.fromEntries(WINS.map((w) => [betKey(w), 'accept']));
+    const wary = Object.fromEntries(WINS.map((w) => [betKey(w), w >= 20 ? 'accept' : 'reject']));
+    expect(summarise('exp-12', plays(null, bold, wary))!.all!.values).toEqual({ w10: 50, w12: 50, w15: 50, w20: 100, w25: 100, w30: 100 });
   });
 });
 

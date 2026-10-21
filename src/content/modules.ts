@@ -1,6 +1,6 @@
 import type { BiasModule } from './types';
 
-// The ten launch modules from the spec's "Launch bias catalogue".
+// The launch modules from the spec's "Launch bias catalogue", plus the v1.5 additions.
 // Teaser text only: bias names live in content/debriefs/ (P3-1).
 // All ten are built; the rest show as "Coming soon" until their
 // experiment and debrief are added (see README "Adding a bias").
@@ -147,6 +147,36 @@ export const MODULES: BiasModule[] = [
       NEUTRAL_INTRO,
     beginnerRank: 10,
     relatedBiasIds: ['exp-06'],
+    status: 'ready',
+  },
+  {
+    id: 'exp-11',
+    teaserTitle: 'Next flip',
+    teaserHook: 'Call the coin.',
+    category: 'judgement',
+    estMinutes: 2,
+    experimentType: 'choice',
+    conditions: [],
+    introText:
+      "Imagine a friend is tossing a fair coin. In each of six rounds you'll see the tosses so far, then bet on the next one. At the end there's one quick question. " +
+      NEUTRAL_INTRO,
+    beginnerRank: 11,
+    relatedBiasIds: ['exp-12'],
+    status: 'ready',
+  },
+  {
+    id: 'exp-12',
+    teaserTitle: 'Coin toss bets',
+    teaserHook: 'Would you take the bet?',
+    category: 'choices',
+    estMinutes: 2,
+    experimentType: 'choice',
+    conditions: [],
+    introText:
+      "Imagine you're offered six bets with your own money. Each one is a single toss of a fair coin, and you can take it or turn it down. There's no right answer. " +
+      NEUTRAL_INTRO,
+    beginnerRank: 12,
+    relatedBiasIds: ['exp-04'],
     status: 'ready',
   },
 ];

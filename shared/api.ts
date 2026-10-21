@@ -21,6 +21,8 @@ export const CONTENT_VERSION: Record<string, number> = {
   'exp-08': 1,
   'exp-09': 1,
   'exp-10': 1,
+  'exp-11': 1,
+  'exp-12': 1,
 };
 
 /** POST /api/answers: one player's first play of one experiment. */
